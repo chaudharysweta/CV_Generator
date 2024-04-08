@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "experience_information",uniqueConstraints = {
-        @UniqueConstraint(name = "unique_experience_information_company_contact",columnNames ="company_contact")
+        @UniqueConstraint(name = "uk_expinfo_company_contact",columnNames ="company_contact")
 })
 @Getter
 @Setter
@@ -20,12 +20,12 @@ import java.util.List;
 public class ExperienceInformation {
 
     @Id
-    @SequenceGenerator(name = "experience_information_gen",sequenceName = "experience_information_seq",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "experience_information_gen")
+    @SequenceGenerator(name = "exp_info_gen",sequenceName = "exp_info_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "exp_info_gen")
     private Short id;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "basic_id",foreignKey = @ForeignKey(name = "fk_experience_information_basic_information_id"))
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @JoinColumn(name = "basic_id",foreignKey = @ForeignKey(name = "fk_exp_info_basic_info_id"))
     private BasicInformation basicInformation;
 
     @Column(name = "company_name",nullable = false,length = 200)

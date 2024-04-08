@@ -15,8 +15,6 @@ public class ExperienceInformationDto {
 
     private Short id;
 
-    private BasicInformation basicInformation;
-
     private String companyName;
 
     private String companyAddress;

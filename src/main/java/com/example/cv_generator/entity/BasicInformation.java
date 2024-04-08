@@ -48,10 +48,4 @@ public class BasicInformation {
 
     @Column(name = "profile_image",nullable = false,length = 200)
     private String profileImage;
-
-
-
-    @OneToMany(mappedBy = "basicInformation")
-    private List<ExperienceInformation> experienceInformation;
-
 }
