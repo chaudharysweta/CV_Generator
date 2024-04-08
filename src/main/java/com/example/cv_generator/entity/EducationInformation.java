@@ -1,6 +1,7 @@
 package com.example.cv_generator.entity;
 
 import com.example.cv_generator.enums.DegreeName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "education_information",uniqueConstraints = {
-        @UniqueConstraint(name = "unique_education_information_contact",columnNames = "institution_contact")
+        @UniqueConstraint(name = "uk_eduinfo_contact",columnNames = "institution_contact")
 })
 @Getter
 @Setter
@@ -20,12 +21,12 @@ import java.time.LocalDate;
 public class EducationInformation {
 
     @Id
-    @SequenceGenerator(name = "education_information_gen",sequenceName = "education_information_seq",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "education_information_gen")
+    @SequenceGenerator(name = "edu_info_gen",sequenceName = "edu_info_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "edu_info_gen")
     private Short id;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "basic_id",foreignKey = @ForeignKey(name = "fk_education_information_basic_information_id"))
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @JoinColumn(name = "basic_id",foreignKey = @ForeignKey(name = "fk_edu_info_basic_info_id"))
     private BasicInformation basicInformation;
 
     @Column(name = "institution_name", nullable = false,length = 200)

@@ -22,7 +22,7 @@ public class BasicInformationServiceImpl implements BasicInformationService {
 
     @Override
     public BasicInformationDto createBasicInformation(BasicInformationDto basicInformationDto) {
-        BasicInformation basicInformation=this.modelMapper.map(basicInformationDto,BasicInformation.class);
+        BasicInformation basicInformation=modelMapper.map(basicInformationDto,BasicInformation.class);
         BasicInformation createdBasicInfo=this.basicInformationRepository.save(basicInformation);
         return this.modelMapper.map(createdBasicInfo,BasicInformationDto.class);
     }

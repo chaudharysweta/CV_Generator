@@ -14,7 +14,7 @@ public class EducationInformationDto {
 
     private Short id;
 
-    private BasicInformation basicInformation;
+
 
     private String institutionName;
 

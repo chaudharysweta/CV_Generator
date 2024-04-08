@@ -1,28 +1,25 @@
 package com.example.cv_generator.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "basic_information",uniqueConstraints = {
-        @UniqueConstraint(name = "basic_information_mobile_number",columnNames = "mobile_number"),
-        @UniqueConstraint(name = "basic_information_email",columnNames = "email"),
-        @UniqueConstraint(name = "basic_information_linkedIn_url",columnNames = "linkedIn_url")
+        @UniqueConstraint(name = "uk_basicinfo_mobileno_email_linkedin",columnNames ={"mobile_number","email","linkedin_url"} )
 })
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class BasicInformation {
 
     @Id
-    @SequenceGenerator(name = "basic_information_gen",sequenceName = "basic_information_seq",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "basic_information_gen")
+    @SequenceGenerator(name = "basic_info_gen",sequenceName = "basic_info_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "basic_info_gen")
     private Short id;
 
     @Column(name = "first_name",nullable = false,length = 50)
@@ -52,8 +49,7 @@ public class BasicInformation {
     @Column(name = "profile_image",nullable = false,length = 200)
     private String profileImage;
 
-    @OneToMany(mappedBy = "basicInformation")
-    private List<EducationInformation> educationInformation;
+
 
     @OneToMany(mappedBy = "basicInformation")
     private List<ExperienceInformation> experienceInformation;
