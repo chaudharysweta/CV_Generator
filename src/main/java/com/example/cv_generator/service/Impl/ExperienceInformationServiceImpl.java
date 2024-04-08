@@ -1,9 +1,10 @@
 package com.example.cv_generator.service.Impl;
 
-import com.example.cv_generator.dto.EducationInformationDto;
 import com.example.cv_generator.dto.ExperienceInformationDto;
+import com.example.cv_generator.entity.BasicInformation;
 import com.example.cv_generator.entity.ExperienceInformation;
 import com.example.cv_generator.exception.ResourceNotFoundException;
+import com.example.cv_generator.repository.BasicInformationRepository;
 import com.example.cv_generator.repository.ExperienceInformationRepository;
 import com.example.cv_generator.service.ExperienceInformationService;
 import org.modelmapper.ModelMapper;
@@ -17,13 +18,19 @@ public class ExperienceInformationServiceImpl implements ExperienceInformationSe
     private final ExperienceInformationRepository experienceInformationRepository;
     private final ModelMapper modelMapper;
 
-    public ExperienceInformationServiceImpl(ExperienceInformationRepository experienceInformationRepository, ModelMapper modelMapper) {
+    private final BasicInformationRepository basicInformationRepository;
+
+    public ExperienceInformationServiceImpl(ExperienceInformationRepository experienceInformationRepository, ModelMapper modelMapper, BasicInformationRepository basicInformationRepository) {
         this.experienceInformationRepository = experienceInformationRepository;
         this.modelMapper = modelMapper;
+        this.basicInformationRepository = basicInformationRepository;
     }
 
     @Override
     public ExperienceInformationDto createExpInfo(ExperienceInformationDto experienceInformationDto) {
+        ExperienceInformation experienceInformation1=new ExperienceInformation();
+        BasicInformation basicInformation=basicInformationRepository.findById(experienceInformationDto.getBasicInformation().getId()).orElseThrow(()->new ResourceNotFoundException("Basic Information","Id",experienceInformationDto.getBasicInformation().getId()));
+        experienceInformation1.setBasicInformation(basicInformation);
         ExperienceInformation experienceInformation=modelMapper.map(experienceInformationDto,ExperienceInformation.class);
         ExperienceInformation createdExpInfo = experienceInformationRepository.save(experienceInformation);
         return modelMapper.map(createdExpInfo,ExperienceInformationDto.class);

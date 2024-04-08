@@ -24,7 +24,7 @@ public class ExperienceInformation {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "exp_info_gen")
     private Short id;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "basic_id",foreignKey = @ForeignKey(name = "fk_exp_info_basic_info_id"))
     private BasicInformation basicInformation;
 
@@ -46,6 +46,4 @@ public class ExperienceInformation {
     @Column(name = "to_present")
     private boolean toPresent;
 
-    @OneToMany(mappedBy = "experienceInformation")
-    private List<ProjectInformation> projectInformation;
 }

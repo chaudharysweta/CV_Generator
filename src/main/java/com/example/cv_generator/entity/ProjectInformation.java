@@ -13,19 +13,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "project_information",uniqueConstraints = {
-        @UniqueConstraint(name = "unique_project_information_name",columnNames ="project_name" ),
-        @UniqueConstraint(name = "unique_project_information_tech_stack",columnNames = "tech_stack"),
-        @UniqueConstraint(name = "unique_project_information_url",columnNames = "project_url")
+        @UniqueConstraint(name = "uk_pro_info_name",columnNames ="project_name" ),
+        @UniqueConstraint(name = "uk_pro_info_url",columnNames = "project_url")
 })
 public class ProjectInformation {
 
     @Id
-    @SequenceGenerator(name = "project_information_gen",sequenceName = "project_information_seq",allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "project_information_gen")
+    @SequenceGenerator(name = "pro_info_gen",sequenceName = "pro_info_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "pro_info_gen")
     private Short id;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinColumn(name = "experience_id",foreignKey = @ForeignKey(name = "fk_project_information_experience_information_id"))
+    @JoinColumn(name = "experience_id",foreignKey = @ForeignKey(name = "fk_pro_info_exp_info_id"))
     private ExperienceInformation experienceInformation;
 
     @Column(name = "project_name",nullable = false,length = 100)

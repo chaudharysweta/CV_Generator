@@ -33,7 +33,4 @@ public class BasicInformationDto {
 
     private String profileImage;
 
-    private List<EducationInformation> educationInformation;
-
-    private List<ExperienceInformation> experienceInformation;
 }

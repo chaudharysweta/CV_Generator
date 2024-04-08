@@ -25,7 +25,7 @@ public class EducationInformation {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "edu_info_gen")
     private Short id;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "basic_id",foreignKey = @ForeignKey(name = "fk_edu_info_basic_info_id"))
     private BasicInformation basicInformation;
 
