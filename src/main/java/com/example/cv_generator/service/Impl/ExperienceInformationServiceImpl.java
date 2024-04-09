@@ -1,5 +1,6 @@
 package com.example.cv_generator.service.Impl;
 
+import com.example.cv_generator.dto.BasicInformationDto;
 import com.example.cv_generator.dto.ExperienceInformationDto;
 import com.example.cv_generator.entity.BasicInformation;
 import com.example.cv_generator.entity.ExperienceInformation;
@@ -26,14 +27,16 @@ public class ExperienceInformationServiceImpl implements ExperienceInformationSe
         this.basicInformationRepository = basicInformationRepository;
     }
 
+
+
     @Override
-    public ExperienceInformationDto createExpInfo(ExperienceInformationDto experienceInformationDto) {
-        ExperienceInformation experienceInformation1=new ExperienceInformation();
-        BasicInformation basicInformation=basicInformationRepository.findById(experienceInformationDto.getBasicInformation().getId()).orElseThrow(()->new ResourceNotFoundException("Basic Information","Id",experienceInformationDto.getBasicInformation().getId()));
-        experienceInformation1.setBasicInformation(basicInformation);
-        ExperienceInformation experienceInformation=modelMapper.map(experienceInformationDto,ExperienceInformation.class);
-        ExperienceInformation createdExpInfo = experienceInformationRepository.save(experienceInformation);
-        return modelMapper.map(createdExpInfo,ExperienceInformationDto.class);
+    public ExperienceInformationDto createExpInfo(ExperienceInformationDto experienceInformationDto, Short basicInfoId) {
+        ExperienceInformation experienceInformation = dtoToExpInfo(experienceInformationDto, basicInfoId);
+        // Save the entity
+        ExperienceInformation savedExpInfo = experienceInformationRepository.save(experienceInformation);
+        // Convert the saved entity back to DTO
+        return expInfoToDto(savedExpInfo, basicInfoId);
+
     }
 
     @Override
@@ -68,4 +71,35 @@ public class ExperienceInformationServiceImpl implements ExperienceInformationSe
         ExperienceInformation experienceInformation=experienceInformationRepository.findById(expInfoId).orElseThrow(()->new ResourceNotFoundException("Experience Information ","Id",expInfoId));
         return modelMapper.map(experienceInformation,ExperienceInformationDto.class);
     }
+
+
+    public ExperienceInformation dtoToExpInfo(ExperienceInformationDto experienceInformationDto, Short basicInfoId) {
+        BasicInformation basicInformation = basicInformationRepository.findById(basicInfoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Basic Information", "Id", basicInfoId));
+        ExperienceInformation experienceInformation = new ExperienceInformation();
+        experienceInformation.setCompanyName(experienceInformationDto.getCompanyName());
+        experienceInformation.setCompanyAddress(experienceInformationDto.getCompanyAddress());
+        experienceInformation.setCompanyContact(experienceInformationDto.getCompanyContact());
+        experienceInformation.setFromDate(experienceInformationDto.getFromDate());
+        experienceInformation.setToDate(experienceInformationDto.getToDate());
+        experienceInformation.setToPresent(experienceInformationDto.isToPresent());
+        experienceInformation.setBasicInformation(basicInformation);
+        return experienceInformation;
+    }
+
+    public ExperienceInformationDto expInfoToDto(ExperienceInformation experienceInformation, Short basicInfoId) {
+        BasicInformationDto basicInformationDto = new BasicInformationDto(); // Assuming you have BasicInformationDto
+        basicInformationDto.setId(experienceInformation.getBasicInformation().getId());
+        // Set other fields of basicInformationDto if necessary
+        ExperienceInformationDto experienceInformationDto = new ExperienceInformationDto();
+        experienceInformationDto.setCompanyName(experienceInformation.getCompanyName());
+        experienceInformationDto.setCompanyAddress(experienceInformation.getCompanyAddress());
+        experienceInformationDto.setCompanyContact(experienceInformation.getCompanyContact());
+        experienceInformationDto.setFromDate(experienceInformation.getFromDate());
+        experienceInformationDto.setToDate(experienceInformation.getToDate());
+        experienceInformationDto.setToPresent(experienceInformation.isToPresent());
+        experienceInformationDto.setBasicInformation(basicInformationDto);
+        return experienceInformationDto;
+    }
+
 }

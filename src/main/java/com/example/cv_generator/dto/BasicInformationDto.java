@@ -4,13 +4,17 @@ import com.example.cv_generator.entity.EducationInformation;
 import com.example.cv_generator.entity.ExperienceInformation;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BasicInformationDto {
 
     private Short id;

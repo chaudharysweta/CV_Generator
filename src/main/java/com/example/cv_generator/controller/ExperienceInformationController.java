@@ -2,6 +2,7 @@ package com.example.cv_generator.controller;
 
 import com.example.cv_generator.dto.ApiResponse;
 import com.example.cv_generator.dto.ExperienceInformationDto;
+import com.example.cv_generator.service.BasicInformationService;
 import com.example.cv_generator.service.ExperienceInformationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,21 +16,25 @@ public class ExperienceInformationController {
 
     private final ExperienceInformationService experienceInformationService;
 
+
+
     public ExperienceInformationController(ExperienceInformationService experienceInformationService) {
         this.experienceInformationService = experienceInformationService;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<ExperienceInformationDto> createExpInfo(@RequestBody ExperienceInformationDto experienceInformationDto){
-        ExperienceInformationDto experienceInformationDto1=experienceInformationService.createExpInfo(experienceInformationDto);
+    @PostMapping("/create/{basic-info-id}")
+    public ResponseEntity<ExperienceInformationDto> createExpInfo(@RequestBody ExperienceInformationDto experienceInformationDto,@PathVariable("basic-info-id") Short basicInfoId){
+        ExperienceInformationDto experienceInformationDto1=experienceInformationService.createExpInfo(experienceInformationDto,basicInfoId);
         return new ResponseEntity<>(experienceInformationDto1, HttpStatus.CREATED);
     }
-
     @PutMapping("/update/{exp-info-id}")
-    public ResponseEntity<ExperienceInformationDto> updateExpInfo(@RequestBody ExperienceInformationDto experienceInformationDto,@PathVariable("exp-info-id") Short expInfoId){
-        ExperienceInformationDto experienceInformationDto1=experienceInformationService.updateExpInfo(experienceInformationDto,expInfoId);
-        return ResponseEntity.ok(experienceInformationDto1);
+    public ResponseEntity<ExperienceInformationDto> updateExpInfo(@RequestBody ExperienceInformationDto experienceInformationDto, @PathVariable("exp-info-id") Short expInfoId) {
+        ExperienceInformationDto updatedExperienceInformationDto = experienceInformationService.updateExpInfo(experienceInformationDto, expInfoId);
+        return ResponseEntity.ok(updatedExperienceInformationDto);
     }
+
+
+
 
     @DeleteMapping("/delete/{exp-info-id}")
     public ResponseEntity<ApiResponse> deteteExpInfo(@PathVariable("exp-info-id") Short expInfoId){
@@ -45,6 +50,7 @@ public class ExperienceInformationController {
     //get by id
     @GetMapping("/{exp-info-id}")
     public ResponseEntity<ExperienceInformationDto>getSingleAuthor(@PathVariable("exp-info-id") Short expInfoId){
-        return ResponseEntity.ok(experienceInformationService.getExpInfoById(expInfoId));
+        ExperienceInformationDto experienceInformationDto=experienceInformationService.getExpInfoById(expInfoId);
+        return new ResponseEntity<>(experienceInformationDto,HttpStatus.OK);
     }
 }
