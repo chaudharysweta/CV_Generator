@@ -7,7 +7,7 @@ import java.util.List;
 public interface ProjectInformationService {
 
     //create
-    ProjectInformationDto createProjectInformation(ProjectInformationDto projectInformationDto);
+    ProjectInformationDto createProjectInformation(ProjectInformationDto projectInformationDto, Short expInfoId);
 
     //update
     ProjectInformationDto updateProjectInformation(ProjectInformationDto projectInformationDto,Short proInfoId);

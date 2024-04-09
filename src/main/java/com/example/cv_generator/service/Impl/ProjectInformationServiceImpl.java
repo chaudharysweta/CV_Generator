@@ -1,8 +1,11 @@
 package com.example.cv_generator.service.Impl;
 
+import com.example.cv_generator.dto.ExperienceInformationDto;
 import com.example.cv_generator.dto.ProjectInformationDto;
+import com.example.cv_generator.entity.ExperienceInformation;
 import com.example.cv_generator.entity.ProjectInformation;
 import com.example.cv_generator.exception.ResourceNotFoundException;
+import com.example.cv_generator.repository.ExperienceInformationRepository;
 import com.example.cv_generator.repository.ProjectInformationRepository;
 import com.example.cv_generator.repository.ProvinceRepository;
 import com.example.cv_generator.service.ProjectInformationService;
@@ -17,17 +20,22 @@ public class ProjectInformationServiceImpl implements ProjectInformationService 
     private final ProjectInformationRepository projectInformationRepository;
     private final ModelMapper modelMapper;
 
-    public ProjectInformationServiceImpl(ProvinceRepository provinceRepository, ProjectInformationRepository projectInformationRepository, ModelMapper modelMapper) {
+    private final ExperienceInformationRepository experienceInformationRepository;
+
+    public ProjectInformationServiceImpl(ProvinceRepository provinceRepository, ProjectInformationRepository projectInformationRepository, ModelMapper modelMapper, ExperienceInformationRepository experienceInformationRepository) {
         this.projectInformationRepository = projectInformationRepository;
         this.modelMapper = modelMapper;
+        this.experienceInformationRepository = experienceInformationRepository;
     }
 
     @Override
-    public ProjectInformationDto createProjectInformation(ProjectInformationDto projectInformationDto) {
-        ProjectInformation projectInformation=modelMapper.map(projectInformationDto,ProjectInformation.class);
-        ProjectInformation createdProInfo =projectInformationRepository.save(projectInformation);
-        return modelMapper.map(createdProInfo,ProjectInformationDto.class);
+    public ProjectInformationDto createProjectInformation(ProjectInformationDto projectInformationDto,Short expInfoId) {
+        ProjectInformation projectInformation=dtoToProjectInfo(projectInformationDto,expInfoId);
+        ProjectInformation saveProjectInfo=projectInformationRepository.save(projectInformation);
+        return projectInfoToDto(saveProjectInfo,expInfoId);
     }
+
+
 
     @Override
     public ProjectInformationDto updateProjectInformation(ProjectInformationDto projectInformationDto, Short proInfoId) {
@@ -63,4 +71,35 @@ public class ProjectInformationServiceImpl implements ProjectInformationService 
         ProjectInformation projectInformation=projectInformationRepository.findById(proInfoId).orElseThrow(()->new ResourceNotFoundException("Project Information","Id",proInfoId));
         return modelMapper.map(projectInformation,ProjectInformationDto.class);
     }
+
+    public ProjectInformation dtoToProjectInfo(ProjectInformationDto projectInformationDto,Short expInfoId){
+        ExperienceInformation experienceInformation=experienceInformationRepository.findById(expInfoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project Information", "Id", expInfoId));
+        ProjectInformation projectInformation=new ProjectInformation();
+        projectInformation.setProjectName(projectInformationDto.getProjectName());
+        projectInformation.setProjectStatus(projectInformationDto.getProjectStatus());
+        projectInformation.setProjectRole(projectInformationDto.getProjectRole());
+        projectInformation.setProjectDescription(projectInformationDto.getProjectDescription());
+        projectInformation.setTechStack(projectInformationDto.getTechStack());
+        projectInformation.setProjectUrl(projectInformationDto.getProjectUrl());
+        projectInformation.setExperienceInformation(experienceInformation);
+        return projectInformation;
+    }
+
+    public ProjectInformationDto projectInfoToDto(ProjectInformation projectInformation, Short expInfoId){
+        ExperienceInformationDto experienceInformationDto=new ExperienceInformationDto();
+        experienceInformationDto.setId(projectInformation.getExperienceInformation().getId());
+        ProjectInformationDto projectInformationDto=new ProjectInformationDto();
+        projectInformationDto.setProjectName(projectInformation.getProjectName());
+        projectInformationDto.setProjectStatus(projectInformation.getProjectStatus());
+        projectInformationDto.setProjectRole(projectInformation.getProjectRole());
+        projectInformationDto.setProjectDescription(projectInformation.getProjectDescription());
+        projectInformationDto.setTechStack(projectInformation.getTechStack());
+        projectInformationDto.setProjectUrl(projectInformation.getProjectUrl());
+        projectInformationDto.setExperienceInformation(experienceInformationDto);
+        return projectInformationDto;
+    }
+
+
+
 }

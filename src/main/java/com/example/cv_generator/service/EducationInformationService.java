@@ -7,7 +7,7 @@ import java.util.List;
 public interface EducationInformationService {
 
     //create
-    EducationInformationDto createEducationInformation(EducationInformationDto educationInformationDto);
+    EducationInformationDto createEducationInformation(EducationInformationDto educationInformationDto, Short basicInfoId);
 
     //update
     EducationInformationDto updateEducationInformation(EducationInformationDto educationInformationDto,Short educationInfoId);

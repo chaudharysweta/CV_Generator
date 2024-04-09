@@ -1,8 +1,12 @@
 package com.example.cv_generator.service.Impl;
 
+import com.example.cv_generator.dto.BasicInformationDto;
 import com.example.cv_generator.dto.EducationInformationDto;
+import com.example.cv_generator.entity.BasicInformation;
 import com.example.cv_generator.entity.EducationInformation;
+import com.example.cv_generator.entity.ExperienceInformation;
 import com.example.cv_generator.exception.ResourceNotFoundException;
+import com.example.cv_generator.repository.BasicInformationRepository;
 import com.example.cv_generator.repository.EducationInformationRepository;
 import com.example.cv_generator.service.EducationInformationService;
 import org.modelmapper.ModelMapper;
@@ -14,20 +18,24 @@ import java.util.List;
 public class EducationInformationServiceImpl implements EducationInformationService {
 
     private final EducationInformationRepository educationInformationRepository;
+
+    private final BasicInformationRepository basicInformationRepository;
     private final ModelMapper modelMapper;
 
-    public EducationInformationServiceImpl(EducationInformationRepository educationInformationRepository, ModelMapper modelMapper) {
+    public EducationInformationServiceImpl(EducationInformationRepository educationInformationRepository, BasicInformationRepository basicInformationRepository, ModelMapper modelMapper) {
         this.educationInformationRepository = educationInformationRepository;
+        this.basicInformationRepository = basicInformationRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public EducationInformationDto createEducationInformation(EducationInformationDto educationInformationDto) {
-            EducationInformation educationInformation=this.modelMapper.map(educationInformationDto,EducationInformation.class);
-            EducationInformation createdEducationInformation=this.educationInformationRepository.save(educationInformation);
-            return this.modelMapper.map(createdEducationInformation,EducationInformationDto.class);
+    public EducationInformationDto createEducationInformation(EducationInformationDto educationInformationDto, Short basicInfoId) {
+            EducationInformation educationInformation=dtoToEduInfo(educationInformationDto,basicInfoId);
+            EducationInformation saveEduInfo=educationInformationRepository.save(educationInformation);
+            return eduInfoToDto(saveEduInfo,basicInfoId);
 
     }
+
 
     @Override
     public EducationInformationDto updateEducationInformation(EducationInformationDto educationInformationDto, Short educationInfoId) {
@@ -64,4 +72,37 @@ public class EducationInformationServiceImpl implements EducationInformationServ
          EducationInformation educationInformation=this.educationInformationRepository.findById(educationInfoId).orElseThrow(()->new ResourceNotFoundException("Education Information","Id",educationInfoId));
          return this.modelMapper.map(educationInformation,EducationInformationDto.class);
     }
+
+    public EducationInformation dtoToEduInfo(EducationInformationDto educationInformationDto, Short basicInfoId){
+        BasicInformation basicInformation=basicInformationRepository.findById(basicInfoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Basic Information", "Id", basicInfoId));
+        EducationInformation educationInformation=new EducationInformation();
+        educationInformation.setInstitutionName(educationInformationDto.getInstitutionName());
+        educationInformation.setInstitutionAddress(educationInformationDto.getInstitutionAddress());
+        educationInformation.setInstitutionContact(educationInformationDto.getInstitutionContact());
+        educationInformation.setFromDate(educationInformationDto.getFromDate());
+        educationInformation.setToDate(educationInformationDto.getToDate());
+        educationInformation.setToPresent(educationInformationDto.isToPresent());
+        educationInformation.setDegreeName(educationInformationDto.getDegreeName());
+        educationInformation.setEducationDescription(educationInformationDto.getEducationDescription());
+        educationInformation.setBasicInformation(basicInformation);
+        return educationInformation;
+    }
+
+    public EducationInformationDto eduInfoToDto(EducationInformation educationInformation,Short basicInfoId){
+        BasicInformationDto basicInformationDto=new BasicInformationDto();
+        basicInformationDto.setId(educationInformation.getBasicInformation().getId());
+        EducationInformationDto educationInformationDto=new EducationInformationDto();
+        educationInformationDto.setInstitutionName(educationInformation.getInstitutionName());
+        educationInformationDto.setInstitutionAddress(educationInformation.getInstitutionAddress());
+        educationInformationDto.setInstitutionContact(educationInformation.getInstitutionContact());
+        educationInformationDto.setFromDate(educationInformation.getFromDate());
+        educationInformationDto.setToDate(educationInformation.getToDate());
+        educationInformationDto.setToPresent(educationInformation.isToPresent());
+        educationInformationDto.setDegreeName(educationInformation.getDegreeName());
+        educationInformationDto.setEducationDescription(educationInformation.getEducationDescription());
+        educationInformationDto.setBasicInformation(basicInformationDto);
+        return educationInformationDto;
+    }
+
 }

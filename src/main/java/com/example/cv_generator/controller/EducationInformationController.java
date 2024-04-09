@@ -19,11 +19,12 @@ public class EducationInformationController {
         this.educationInformationService = educationInformationService;
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createEducationInformation(@RequestBody EducationInformationDto educationInformationDto){
-        EducationInformationDto educationInformationDto1=this.educationInformationService.createEducationInformation(educationInformationDto);
-        return new ResponseEntity<>(new ApiResponse("Education Information Created Successfully",true), HttpStatus.CREATED);
+    @PostMapping("/createEdu/{basic-info-id}")
+    public ResponseEntity<EducationInformationDto> createEduInfo(@RequestBody EducationInformationDto educationInformationDto,@PathVariable("basic-info-id") Short basicInfoId){
+        EducationInformationDto educationInformationDto1=educationInformationService.createEducationInformation(educationInformationDto,basicInfoId);
+        return new ResponseEntity<>(educationInformationDto1, HttpStatus.CREATED);
     }
+
 
     @PutMapping("/update/{edu-info-id}")
     public ResponseEntity<EducationInformationDto> updateEducationInformation(@RequestBody EducationInformationDto educationInformationDto,@PathVariable("edu-info-id") Short educationInfoId){

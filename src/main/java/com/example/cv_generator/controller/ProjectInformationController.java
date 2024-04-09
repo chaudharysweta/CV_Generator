@@ -20,11 +20,12 @@ public class ProjectInformationController {
     }
 
     //create
-    @PostMapping("/create")
-    public ResponseEntity<ProjectInformationDto> createProInfo(@RequestBody ProjectInformationDto projectInformationDto){
-        ProjectInformationDto projectInformationDto1=projectInformationService.createProjectInformation(projectInformationDto);
+    @PostMapping("/create/{exp-info-id}")
+    public ResponseEntity<ProjectInformationDto> createProInfo(@RequestBody ProjectInformationDto projectInformationDto,@PathVariable("exp-info-id") Short expInfoId){
+        ProjectInformationDto projectInformationDto1=projectInformationService.createProjectInformation(projectInformationDto,expInfoId);
         return new ResponseEntity<>(projectInformationDto1, HttpStatus.CREATED);
     }
+
 
     //update
     @PutMapping("/update/{pro-info-id}")
