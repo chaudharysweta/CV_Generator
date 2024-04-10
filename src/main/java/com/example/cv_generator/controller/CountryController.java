@@ -50,7 +50,7 @@ public class CountryController {
     //get by id
     @GetMapping("/get/{country-id}")
     public ResponseEntity<CountryDto> getCountryById(@PathVariable("country-id") Integer countryId){
-        CountryDto countryDto= countryService.getCountryById(countryId);;
+        CountryDto countryDto= countryService.getCountryById(countryId);
         return new ResponseEntity<>(countryDto,HttpStatus.OK);
     }
 }

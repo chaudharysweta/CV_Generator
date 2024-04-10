@@ -15,13 +15,9 @@ public class AddressInformationDto {
 
     private Short id;
 
-    private BasicInformation basicInformation;
+    private BasicInformationDto basicInformation;
 
     private AddressType addressType;
 
-    private Province province;
-
-    private District district;
-
-    private LocalLevel localLevel;
+    private LocalLevelDto localLevel;
 }

@@ -5,8 +5,10 @@ import com.example.cv_generator.dto.LocalLevelDto;
 import com.example.cv_generator.entity.District;
 import com.example.cv_generator.entity.LocalLevel;
 import com.example.cv_generator.exception.ResourceNotFoundException;
+import com.example.cv_generator.repository.CountryRepository;
 import com.example.cv_generator.repository.DistrictRepository;
 import com.example.cv_generator.repository.LocalLevelRepository;
+import com.example.cv_generator.repository.ProvinceRepository;
 import com.example.cv_generator.service.LocalLevelService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,7 @@ public class LocalLevelServiceImpl implements LocalLevelService {
     private final LocalLevelRepository localLevelRepository;
     private final ModelMapper modelMapper;
 
-    public LocalLevelServiceImpl(DistrictRepository districtRepository, LocalLevelRepository localLevelRepository, ModelMapper modelMapper) {
+    public LocalLevelServiceImpl(DistrictRepository districtRepository, LocalLevelRepository localLevelRepository, ProvinceRepository provinceRepository, CountryRepository countryRepository, ModelMapper modelMapper) {
         this.districtRepository = districtRepository;
         this.localLevelRepository = localLevelRepository;
         this.modelMapper = modelMapper;
