@@ -47,7 +47,7 @@ public class EducationInformationServiceImpl implements EducationInformationServ
         educationInformation.setToDate(educationInformationDto.getToDate());
         educationInformation.setDegreeName(educationInformationDto.getDegreeName());
         educationInformation.setEducationDescription(educationInformation.getEducationDescription());
-        educationInformation.setToPresent(educationInformationDto.isToPresent());
+        educationInformation.setToPresent(educationInformationDto.getToPresent());
         EducationInformation updatedEducationInformation=this.educationInformationRepository.save(educationInformation);
         return this.modelMapper.map(updatedEducationInformation,EducationInformationDto.class);
     }
@@ -82,7 +82,7 @@ public class EducationInformationServiceImpl implements EducationInformationServ
         educationInformation.setInstitutionContact(educationInformationDto.getInstitutionContact());
         educationInformation.setFromDate(educationInformationDto.getFromDate());
         educationInformation.setToDate(educationInformationDto.getToDate());
-        educationInformation.setToPresent(educationInformationDto.isToPresent());
+        educationInformation.setToPresent(educationInformationDto.getToPresent());
         educationInformation.setDegreeName(educationInformationDto.getDegreeName());
         educationInformation.setEducationDescription(educationInformationDto.getEducationDescription());
         educationInformation.setBasicInformation(basicInformation);
@@ -98,7 +98,7 @@ public class EducationInformationServiceImpl implements EducationInformationServ
         educationInformationDto.setInstitutionContact(educationInformation.getInstitutionContact());
         educationInformationDto.setFromDate(educationInformation.getFromDate());
         educationInformationDto.setToDate(educationInformation.getToDate());
-        educationInformationDto.setToPresent(educationInformation.isToPresent());
+        educationInformationDto.setToPresent(educationInformation.getToPresent());
         educationInformationDto.setDegreeName(educationInformation.getDegreeName());
         educationInformationDto.setEducationDescription(educationInformation.getEducationDescription());
         educationInformationDto.setBasicInformation(basicInformationDto);

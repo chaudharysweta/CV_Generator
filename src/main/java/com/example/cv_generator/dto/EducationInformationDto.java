@@ -26,7 +26,7 @@ public class EducationInformationDto {
 
     private LocalDate toDate;
 
-    private boolean toPresent;
+    private Boolean toPresent;
 
     private DegreeName degreeName;
 

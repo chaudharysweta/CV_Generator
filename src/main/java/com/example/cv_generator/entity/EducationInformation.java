@@ -45,7 +45,7 @@ public class EducationInformation {
     private LocalDate toDate;
 
     @Column(name = "to_present")
-    private boolean toPresent;
+    private Boolean toPresent;
 
     @Column(name = "degree_name",nullable = false,length = 100)
     @Enumerated(EnumType.STRING)
