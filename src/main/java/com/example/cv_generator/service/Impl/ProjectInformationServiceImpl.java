@@ -89,6 +89,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService 
     public ProjectInformationDto projectInfoToDto(ProjectInformation projectInformation, Short expInfoId){
         ExperienceInformationDto experienceInformationDto=new ExperienceInformationDto();
         experienceInformationDto.setId(projectInformation.getExperienceInformation().getId());
+
         ProjectInformationDto projectInformationDto=new ProjectInformationDto();
         projectInformationDto.setProjectName(projectInformation.getProjectName());
         projectInformationDto.setProjectStatus(projectInformation.getProjectStatus());

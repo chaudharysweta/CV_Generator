@@ -19,7 +19,7 @@ public class EducationInformationController {
         this.educationInformationService = educationInformationService;
     }
 
-    @PostMapping("/createEdu/{basic-info-id}")
+    @PostMapping("/create/{basic-info-id}")
     public ResponseEntity<EducationInformationDto> createEduInfo(@RequestBody EducationInformationDto educationInformationDto,@PathVariable("basic-info-id") Short basicInfoId){
         EducationInformationDto educationInformationDto1=educationInformationService.createEducationInformation(educationInformationDto,basicInfoId);
         return new ResponseEntity<>(educationInformationDto1, HttpStatus.CREATED);
