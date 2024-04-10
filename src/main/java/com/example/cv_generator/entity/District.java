@@ -19,7 +19,7 @@ public class District {
     @Id
     @SequenceGenerator(name = "district_gen",sequenceName = "district_seq",allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "district_gen")
-    private Short id;
+    private Integer id;
 
     @Column(name = "name",unique = true,length = 100)
     private String name;
@@ -34,6 +34,5 @@ public class District {
     @JoinColumn(name = "province_id", foreignKey = @ForeignKey(name = "fk_district_province_id"))
     private Province province;
 
-    @OneToMany(mappedBy = "district",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<LocalLevel> localLevel;
+
 }

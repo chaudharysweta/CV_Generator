@@ -19,7 +19,7 @@ public class Province {
     @Id
     @SequenceGenerator(name = "province_gen", sequenceName = "province_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "province_gen")
-    private Short id;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
@@ -34,6 +34,5 @@ public class Province {
     @JoinColumn(name = "country_id", foreignKey = @ForeignKey(name = "fk_province_country_id"))
     private Country country;
 
-    @OneToMany(mappedBy = "province",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<District> district;
+
 }

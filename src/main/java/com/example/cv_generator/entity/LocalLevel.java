@@ -17,7 +17,7 @@ public class LocalLevel {
     @Id
     @SequenceGenerator(name = "local_level_gen", sequenceName = "local_level_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "local_level_gen")
-    private Short id;
+    private Integer id;
 
     @Column(name = "name",unique = true,length = 100)
     private String name;

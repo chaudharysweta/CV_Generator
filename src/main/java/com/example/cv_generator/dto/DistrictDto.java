@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class DistrictDto {
 
-    private Short id;
+    private Integer id;
 
     private String name;
 
@@ -19,7 +19,7 @@ public class DistrictDto {
 
     private String code;
 
-    private Province province;
+    private ProvinceDto province;
 
-    private List<LocalLevel> localLevel;
+
 }
