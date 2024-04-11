@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface BasicInformationService {
 
+
+
     //create
     BasicInformationDto createBasicInformation(BasicInformationDto basicInformationDto);
 
