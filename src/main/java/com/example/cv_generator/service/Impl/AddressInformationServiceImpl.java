@@ -2,7 +2,7 @@ package com.example.cv_generator.service.Impl;
 
 import com.example.cv_generator.dto.AddressInformationDto;
 import com.example.cv_generator.dto.BasicInformationDto;
-import com.example.cv_generator.pdf.IdNameDto;
+import com.example.cv_generator.dto.IdNameDto;
 import com.example.cv_generator.dto.LocalLevelDto;
 import com.example.cv_generator.entity.*;
 import com.example.cv_generator.exception.ResourceNotFoundException;

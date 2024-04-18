@@ -1,13 +1,7 @@
 package com.example.cv_generator.dto;
 
-import com.example.cv_generator.entity.BasicInformation;
-import com.example.cv_generator.entity.District;
-import com.example.cv_generator.entity.LocalLevel;
-import com.example.cv_generator.entity.Province;
 import com.example.cv_generator.enums.AddressType;
-import com.example.cv_generator.pdf.IdNameDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

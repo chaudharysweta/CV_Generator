@@ -1,15 +1,14 @@
-package com.example.cv_generator.pdf;
+package com.example.cv_generator.service;
 
 
 
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Map;
 
 public interface PdfGenerateService {
 
     ByteArrayOutputStream generatePdf(Short id);
 
-    Map<String ,String> getAllInformation(Short id) throws IOException;
+    String getAllInformation(Short id) throws IOException;
 }

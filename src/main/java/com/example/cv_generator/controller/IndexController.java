@@ -1,6 +1,6 @@
-package com.example.cv_generator.pdf;
+package com.example.cv_generator.controller;
 
-import com.example.cv_generator.controller.BaseController;
+import com.example.cv_generator.service.PdfGenerateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,7 +36,7 @@ public class IndexController extends BaseController {
     }
 
     @GetMapping("/generateHtml/{id}")
-    public ResponseEntity<?> generateHtml(@PathVariable Short id) throws IOException {
+    public ResponseEntity<String> generateHtml(@PathVariable Short id) throws IOException {
 
         return  ResponseEntity.ok(pdfGenerateService.getAllInformation(id));
     }

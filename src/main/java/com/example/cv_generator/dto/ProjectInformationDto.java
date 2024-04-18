@@ -25,7 +25,7 @@ public class ProjectInformationDto {
     @Size(message = "Project name must not exceed 100", max = 100)
     private String projectName;
 
-    @NotEmpty(message = "Project status must not be empty")
+    @NotNull(message = "Project status must not be empty")
     private ProjectStatus projectStatus;
 
     @NotEmpty(message = "Project Role must not be empty")

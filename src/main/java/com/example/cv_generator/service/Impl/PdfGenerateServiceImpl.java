@@ -1,4 +1,4 @@
-package com.example.cv_generator.pdf;
+package com.example.cv_generator.service.Impl;
 import com.example.cv_generator.dto.*;
 import com.example.cv_generator.service.*;
 
@@ -14,9 +14,7 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.*;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PdfGenerateServiceImpl implements PdfGenerateService {
@@ -46,11 +44,11 @@ public class PdfGenerateServiceImpl implements PdfGenerateService {
 
     public ByteArrayOutputStream generatePdf(Short id) {
 
-        Map<String, String> htmlContent = null;
+        String htmlContent = null;
         try {
             htmlContent = getAllInformation(id);
             String fileName = "test.pdf";
-            return generatePdfFromHtml(htmlContent.get("html"), htmlContent.get("fileName"));
+            return generatePdfFromHtml(htmlContent, fileName);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -58,7 +56,7 @@ public class PdfGenerateServiceImpl implements PdfGenerateService {
     }
 
     @Override
-    public Map<String ,String > getAllInformation(Short id) throws IOException {
+    public String getAllInformation(Short id) throws IOException {
         BasicInformationDto basicInformationDto = basicInformationService.getBasicInformationById(id);
         basicInformationDto.setProfileImage(imgToBase64(basicInformationDto.getProfileImage()));
         List<EducationInformationDto> educationInformationDtos = educationInformationService.getEducationByBasicId(id);
@@ -74,11 +72,7 @@ public class PdfGenerateServiceImpl implements PdfGenerateService {
         context.setVariable("projectInformationDtos",projectInformationDtos);
         context.setVariable("addressInformationDtos",addressInformationDtos);
 
-        Map<String, String> map = new HashMap<>();
-        map.put("html", templateEngine.process("index", context));
-        map.put("fileName", basicInformationDto.getFirstName().concat(".pdf"));
-
-        return map;
+        return templateEngine.process("index", context);
     }
 
 

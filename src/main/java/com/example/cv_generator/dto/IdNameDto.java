@@ -1,4 +1,4 @@
-package com.example.cv_generator.pdf;
+package com.example.cv_generator.dto;
 
 import lombok.*;
 
