@@ -4,7 +4,6 @@ import com.example.cv_generator.dto.BasicInformationDto;
 import com.example.cv_generator.dto.EducationInformationDto;
 import com.example.cv_generator.entity.BasicInformation;
 import com.example.cv_generator.entity.EducationInformation;
-import com.example.cv_generator.entity.ExperienceInformation;
 import com.example.cv_generator.exception.ResourceNotFoundException;
 import com.example.cv_generator.repository.BasicInformationRepository;
 import com.example.cv_generator.repository.EducationInformationRepository;
@@ -13,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EducationInformationServiceImpl implements EducationInformationService {
@@ -30,16 +30,16 @@ public class EducationInformationServiceImpl implements EducationInformationServ
 
     @Override
     public EducationInformationDto createEducationInformation(EducationInformationDto educationInformationDto, Short basicInfoId) {
-            EducationInformation educationInformation=dtoToEduInfo(educationInformationDto,basicInfoId);
-            EducationInformation saveEduInfo=educationInformationRepository.save(educationInformation);
-            return eduInfoToDto(saveEduInfo,basicInfoId);
+        EducationInformation educationInformation = dtoToEduInfo(educationInformationDto, basicInfoId);
+        EducationInformation saveEduInfo = educationInformationRepository.save(educationInformation);
+        return eduInfoToDto(saveEduInfo);
 
     }
 
 
     @Override
     public EducationInformationDto updateEducationInformation(EducationInformationDto educationInformationDto, Short educationInfoId) {
-        EducationInformation educationInformation=this.educationInformationRepository.findById(educationInfoId).orElseThrow(()->new ResourceNotFoundException("Education Information","Id",educationInfoId));
+        EducationInformation educationInformation = this.educationInformationRepository.findById(educationInfoId).orElseThrow(() -> new ResourceNotFoundException("Education Information", "Id", educationInfoId));
         educationInformation.setInstitutionName(educationInformationDto.getInstitutionName());
         educationInformation.setInstitutionAddress(educationInformationDto.getInstitutionAddress());
         educationInformation.setInstitutionContact(educationInformationDto.getInstitutionContact());
@@ -48,13 +48,13 @@ public class EducationInformationServiceImpl implements EducationInformationServ
         educationInformation.setDegreeName(educationInformationDto.getDegreeName());
         educationInformation.setEducationDescription(educationInformation.getEducationDescription());
         educationInformation.setToPresent(educationInformationDto.getToPresent());
-        EducationInformation updatedEducationInformation=this.educationInformationRepository.save(educationInformation);
-        return this.modelMapper.map(updatedEducationInformation,EducationInformationDto.class);
+        EducationInformation updatedEducationInformation = this.educationInformationRepository.save(educationInformation);
+        return this.modelMapper.map(updatedEducationInformation, EducationInformationDto.class);
     }
 
     @Override
     public void deleteEducationInformation(Short educationInfoId) {
-        EducationInformation educationInformation=this.educationInformationRepository.findById(educationInfoId).orElseThrow(()->new ResourceNotFoundException("Education Information","Id",educationInfoId));
+        EducationInformation educationInformation = this.educationInformationRepository.findById(educationInfoId).orElseThrow(() -> new ResourceNotFoundException("Education Information", "Id", educationInfoId));
         this.educationInformationRepository.delete(educationInformation);
 
     }
@@ -62,21 +62,33 @@ public class EducationInformationServiceImpl implements EducationInformationServ
     @Override
     public List<EducationInformationDto> getAllEducationInformation() {
 
-        List<EducationInformation> educationInformations=this.educationInformationRepository.findAll();
-        List<EducationInformationDto> educationInformationDtos=educationInformations.stream().map((educationInfo)->this.modelMapper.map(educationInfo,EducationInformationDto.class)).toList();
+        List<EducationInformation> educationInformation = this.educationInformationRepository.findAll();
+        List<EducationInformationDto> educationInformationDtos = educationInformation.stream().map((educationInfo) -> this.modelMapper.map(educationInfo, EducationInformationDto.class)).toList();
         return educationInformationDtos;
     }
 
     @Override
     public EducationInformationDto getEducationInformationById(Short educationInfoId) {
-         EducationInformation educationInformation=this.educationInformationRepository.findById(educationInfoId).orElseThrow(()->new ResourceNotFoundException("Education Information","Id",educationInfoId));
-         return this.modelMapper.map(educationInformation,EducationInformationDto.class);
+        EducationInformation educationInformation = this.educationInformationRepository.findById(educationInfoId).orElseThrow(() -> new ResourceNotFoundException("Education Information", "Id", educationInfoId));
+        return this.modelMapper.map(educationInformation, EducationInformationDto.class);
     }
 
-    public EducationInformation dtoToEduInfo(EducationInformationDto educationInformationDto, Short basicInfoId){
-        BasicInformation basicInformation=basicInformationRepository.findById(basicInfoId)
+
+
+    @Override
+    public List<EducationInformationDto> getEducationByBasicId(Short basicInfoId) {
+        return toDto(educationInformationRepository
+                .findEducationInformationByBasicInformation(new BasicInformation(basicInfoId)));
+    }
+
+    public List<EducationInformationDto> toDto(List<EducationInformation> educationInformationList) {
+        return educationInformationList.stream().map(this::eduInfoToDto).collect(Collectors.toList());
+    }
+
+    public EducationInformation dtoToEduInfo(EducationInformationDto educationInformationDto, Short basicInfoId) {
+        BasicInformation basicInformation = basicInformationRepository.findById(basicInfoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Basic Information", "Id", basicInfoId));
-        EducationInformation educationInformation=new EducationInformation();
+        EducationInformation educationInformation = new EducationInformation();
         educationInformation.setInstitutionName(educationInformationDto.getInstitutionName());
         educationInformation.setInstitutionAddress(educationInformationDto.getInstitutionAddress());
         educationInformation.setInstitutionContact(educationInformationDto.getInstitutionContact());
@@ -89,10 +101,10 @@ public class EducationInformationServiceImpl implements EducationInformationServ
         return educationInformation;
     }
 
-    public EducationInformationDto eduInfoToDto(EducationInformation educationInformation,Short basicInfoId){
-        BasicInformationDto basicInformationDto=new BasicInformationDto();
+    public EducationInformationDto eduInfoToDto(EducationInformation educationInformation) {
+        BasicInformationDto basicInformationDto = new BasicInformationDto();
         basicInformationDto.setId(educationInformation.getBasicInformation().getId());
-        EducationInformationDto educationInformationDto=new EducationInformationDto();
+        EducationInformationDto educationInformationDto = new EducationInformationDto();
         educationInformationDto.setInstitutionName(educationInformation.getInstitutionName());
         educationInformationDto.setInstitutionAddress(educationInformation.getInstitutionAddress());
         educationInformationDto.setInstitutionContact(educationInformation.getInstitutionContact());

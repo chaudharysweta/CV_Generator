@@ -27,14 +27,14 @@ public class ProvinceServiceImpl implements ProvinceService {
     }
 
     @Override
-    public ProvinceDto createdProvince(ProvinceDto provinceDto, Integer countryId) {
+    public ProvinceDto createdProvince(ProvinceDto provinceDto, Short countryId) {
         Province province=dtoToProvince(provinceDto,countryId);
         Province savedProvince=provinceRepository.save(province);
         return provinceToDto(savedProvince,countryId);
     }
 
     @Override
-    public ProvinceDto updateProvince(ProvinceDto provinceDto, Integer provinceId) {
+    public ProvinceDto updateProvince(ProvinceDto provinceDto, Short provinceId) {
         Province province=provinceRepository.findById(provinceId)
                 .orElseThrow(()->new ResourceNotFoundException("Province","Id",provinceId));
         province.setName(provinceDto.getName());
@@ -45,7 +45,7 @@ public class ProvinceServiceImpl implements ProvinceService {
     }
 
     @Override
-    public void deleteProvince(Integer provinceId) {
+    public void deleteProvince(Short provinceId) {
         Province province=provinceRepository.findById(provinceId)
                 .orElseThrow(()->new ResourceNotFoundException("Province","Id",provinceId));
         provinceRepository.delete(province);
@@ -59,13 +59,13 @@ public class ProvinceServiceImpl implements ProvinceService {
     }
 
     @Override
-    public ProvinceDto getProvinceById(Integer provinceId) {
+    public ProvinceDto getProvinceById(Short provinceId) {
         Province province=provinceRepository.findById(provinceId)
                 .orElseThrow(()->new ResourceNotFoundException("Province","Id",provinceId));
         return modelMapper.map(province,ProvinceDto.class);
     }
 
-    public Province dtoToProvince(ProvinceDto provinceDto,Integer countryId){
+    public Province dtoToProvince(ProvinceDto provinceDto,Short countryId){
         Country country = countryRepository.findById(countryId)
                 .orElseThrow(()->new ResourceNotFoundException("Country","Id",countryId));
         Province province = new Province();
@@ -76,7 +76,7 @@ public class ProvinceServiceImpl implements ProvinceService {
         return province;
     }
 
-    public ProvinceDto provinceToDto(Province province,Integer countryId) {
+    public ProvinceDto provinceToDto(Province province,Short countryId) {
         CountryDto countryDto = new CountryDto();
         countryDto.setId(province.getCountry().getId());
         countryDto.setName(province.getCountry().getName());

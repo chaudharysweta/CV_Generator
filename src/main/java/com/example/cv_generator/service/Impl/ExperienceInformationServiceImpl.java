@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ExperienceInformationServiceImpl implements ExperienceInformationService {
@@ -32,10 +33,8 @@ public class ExperienceInformationServiceImpl implements ExperienceInformationSe
     @Override
     public ExperienceInformationDto createExpInfo(ExperienceInformationDto experienceInformationDto, Short basicInfoId) {
         ExperienceInformation experienceInformation = dtoToExpInfo(experienceInformationDto, basicInfoId);
-        // Save the entity
         ExperienceInformation savedExpInfo = experienceInformationRepository.save(experienceInformation);
-        // Convert the saved entity back to DTO
-        return expInfoToDto(savedExpInfo, basicInfoId);
+        return expInfoToDto(savedExpInfo);
 
     }
 
@@ -66,10 +65,22 @@ public class ExperienceInformationServiceImpl implements ExperienceInformationSe
         return experienceInformationDtos;
     }
 
+
+
     @Override
     public ExperienceInformationDto getExpInfoById(Short expInfoId) {
         ExperienceInformation experienceInformation=experienceInformationRepository.findById(expInfoId).orElseThrow(()->new ResourceNotFoundException("Experience Information ","Id",expInfoId));
         return modelMapper.map(experienceInformation,ExperienceInformationDto.class);
+    }
+
+    @Override
+    public List<ExperienceInformationDto> getExperienceInfoByBasicInfoId(Short basicInfoId) {
+        return toDto(experienceInformationRepository.findExperienceInformationByBasicInformationId((basicInfoId)));
+    }
+
+
+    public List<ExperienceInformationDto> toDto(List<ExperienceInformation> experienceInformationList) {
+        return experienceInformationList.stream().map(this::expInfoToDto).collect(Collectors.toList());
     }
 
 
@@ -87,10 +98,18 @@ public class ExperienceInformationServiceImpl implements ExperienceInformationSe
         return experienceInformation;
     }
 
-    public ExperienceInformationDto expInfoToDto(ExperienceInformation experienceInformation, Short basicInfoId) {
-        BasicInformationDto basicInformationDto = new BasicInformationDto(); // Assuming you have BasicInformationDto
+    public ExperienceInformationDto expInfoToDto(ExperienceInformation experienceInformation) {
+        BasicInformationDto basicInformationDto = new BasicInformationDto();
         basicInformationDto.setId(experienceInformation.getBasicInformation().getId());
-        // Set other fields of basicInformationDto if necessary
+        basicInformationDto.setFirstName(experienceInformation.getBasicInformation().getFirstName());
+        basicInformationDto.setMiddleName(experienceInformation.getBasicInformation().getMiddleName());
+        basicInformationDto.setLast_name(experienceInformation.getBasicInformation().getLast_name());
+        basicInformationDto.setBackground(experienceInformation.getBasicInformation().getBackground());
+        basicInformationDto.setTitle(experienceInformation.getBasicInformation().getTitle());
+        basicInformationDto.setLinkedInUrl(experienceInformation.getBasicInformation().getLinkedInUrl());
+        basicInformationDto.setMobileNumber(experienceInformation.getBasicInformation().getMobileNumber());
+        basicInformationDto.setProfileImage(experienceInformation.getBasicInformation().getProfileImage());
+
         ExperienceInformationDto experienceInformationDto = new ExperienceInformationDto();
         experienceInformationDto.setCompanyName(experienceInformation.getCompanyName());
         experienceInformationDto.setCompanyAddress(experienceInformation.getCompanyAddress());

@@ -22,4 +22,6 @@ public interface BasicInformationService {
 
     //get by id
     BasicInformationDto getBasicInformationById(Short basicInfoId);
+
+
 }

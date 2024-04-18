@@ -40,8 +40,9 @@ public class SecurityConfiguration {
         http.csrf(csrf->csrf.disable())
                 .authorizeRequests().
                 requestMatchers("/api/auth/login").permitAll()
-
+                //.requestMatchers(HttpMethod.POST).permitAll()
                 .requestMatchers("/api/auth/register").permitAll()
+                .requestMatchers("/index/generateHtml/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and().exceptionHandling(ex->ex.authenticationEntryPoint(point))

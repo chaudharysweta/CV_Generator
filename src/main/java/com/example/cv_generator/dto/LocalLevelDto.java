@@ -1,14 +1,18 @@
 package com.example.cv_generator.dto;
 
 import com.example.cv_generator.entity.District;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class LocalLevelDto {
 
-    private Integer id;
+    private Short id;
 
     private String name;
 
@@ -16,7 +20,7 @@ public class LocalLevelDto {
 
     private String code;
 
-    private DistrictDto district;
+    private Short district;
 
     private Integer totalWardCount;
 }

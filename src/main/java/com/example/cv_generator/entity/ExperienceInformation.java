@@ -46,4 +46,8 @@ public class ExperienceInformation {
     @Column(name = "to_present")
     private boolean toPresent;
 
+    public ExperienceInformation(Short experienceInfoId){
+        this.id=experienceInfoId;
+    }
+
 }

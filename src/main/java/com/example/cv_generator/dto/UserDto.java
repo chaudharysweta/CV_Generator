@@ -23,7 +23,8 @@ public class UserDto {
     private String name;
     @Email(message = "Email address is not valid")
     private String email;
-    @Pattern(regexp="^\\+(?:[0-9]●?){6,14}[0-9]$", message="Phone number is not valid")
+    @NotEmpty(message = "Mobile number is required")
+    @Size(message = "Minimum and maximum numbers mobileNumber is 10 and 10 respectively", min = 10, max = 10)
     private String phoneNumber;
     @NotEmpty
     @Size(min = 3,max = 10,message = "Password must be min 3 chars and maximum 4 chars")

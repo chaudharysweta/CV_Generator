@@ -21,21 +21,23 @@ public class LocalLevelController {
 
     //create
     @PostMapping("/create/{district-id}")
-    public ResponseEntity<LocalLevelDto> createLocalLevel(@RequestBody LocalLevelDto localLevelDto, @PathVariable("district-id") Integer districtId){
+    public ResponseEntity<LocalLevelDto> createLocalLevel(@RequestBody LocalLevelDto localLevelDto,
+                                                          @PathVariable("district-id") Short districtId){
         LocalLevelDto localLevelDto1=localLevelService.createLocalLevel(localLevelDto,districtId);
         return new ResponseEntity<>(localLevelDto1, HttpStatus.CREATED);
     }
 
     //update
     @PutMapping("/update/{local-id}")
-    public ResponseEntity<LocalLevelDto> updateLocal(@RequestBody LocalLevelDto localLevelDto,@PathVariable("local-id") Integer localId){
+    public ResponseEntity<LocalLevelDto> updateLocal(@RequestBody LocalLevelDto localLevelDto,
+                                                     @PathVariable("local-id") Short localId){
         LocalLevelDto localLevelDto1=localLevelService.updateLocalLevel(localLevelDto,localId);
         return ResponseEntity.ok(localLevelDto1);
     }
 
     //delete
     @DeleteMapping("/delete/{local-id}")
-    public ResponseEntity<ApiResponse> deleteLocal(@PathVariable("local-id") Integer localId){
+    public ResponseEntity<ApiResponse> deleteLocal(@PathVariable("local-id") Short localId){
         localLevelService.deleteLocalLevel(localId);
         return new ResponseEntity<>(new ApiResponse("Local Level Deleted Successfully",true),HttpStatus.OK);
     }
@@ -48,7 +50,7 @@ public class LocalLevelController {
 
     //get by id
     @GetMapping("/{local-id}")
-    public ResponseEntity<LocalLevelDto> getLocalById(@PathVariable("local-id") Integer localId){
+    public ResponseEntity<LocalLevelDto> getLocalById(@PathVariable("local-id") Short localId){
         LocalLevelDto localLevelDto=localLevelService.getLocalDistrictById(localId);
         return new ResponseEntity<>(localLevelDto,HttpStatus.OK);
     }

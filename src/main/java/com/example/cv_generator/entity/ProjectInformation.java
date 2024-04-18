@@ -12,10 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "project_information",uniqueConstraints = {
-        @UniqueConstraint(name = "uk_pro_info_name",columnNames ="project_name" ),
-        @UniqueConstraint(name = "uk_pro_info_url",columnNames = "project_url")
-})
+@Table(name = "project_information")
 public class ProjectInformation {
 
     @Id

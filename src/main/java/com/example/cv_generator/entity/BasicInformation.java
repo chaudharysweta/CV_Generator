@@ -8,8 +8,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "basic_information",uniqueConstraints = {
-        @UniqueConstraint(name = "uk_basicinfo_mobileno_email_linkedin",columnNames ={"mobile_number","email","linkedin_url"} )
+        @UniqueConstraint(name = "uk_basicinfo_mobileno",columnNames ="mobile_number" ),
+        @UniqueConstraint(name = "uk_basicinfo_email",columnNames = "email")
+
 })
+
 @Getter
 @Setter
 @Builder
@@ -46,6 +49,10 @@ public class BasicInformation {
     @Column(name = "linkedIn_url",nullable = false,length = 200)
     private String linkedInUrl;
 
-    @Column(name = "profile_image",nullable = false,length = 200)
+    @Column(name = "profile_image")
     private String profileImage;
+
+    public BasicInformation (Short id){
+        this.id=id;
+    }
 }

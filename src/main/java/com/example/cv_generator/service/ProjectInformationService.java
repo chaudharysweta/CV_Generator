@@ -20,4 +20,8 @@ public interface ProjectInformationService {
 
     //get by id
     ProjectInformationDto getProjectInformationById(Short proInfoId);
+
+    List<ProjectInformationDto> getProjectInfoByExperienceInfoId(Short experienceInfoId);
+    // get by basic id
+    List<ProjectInformationDto> getProjectInfoByBasicInfoId(Short basicInfoId);
 }

@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectInformationServiceImpl implements ProjectInformationService {
@@ -22,7 +23,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService 
 
     private final ExperienceInformationRepository experienceInformationRepository;
 
-    public ProjectInformationServiceImpl(ProvinceRepository provinceRepository, ProjectInformationRepository projectInformationRepository, ModelMapper modelMapper, ExperienceInformationRepository experienceInformationRepository) {
+    public ProjectInformationServiceImpl(ProjectInformationRepository projectInformationRepository, ModelMapper modelMapper, ExperienceInformationRepository experienceInformationRepository) {
         this.projectInformationRepository = projectInformationRepository;
         this.modelMapper = modelMapper;
         this.experienceInformationRepository = experienceInformationRepository;
@@ -32,7 +33,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService 
     public ProjectInformationDto createProjectInformation(ProjectInformationDto projectInformationDto,Short expInfoId) {
         ProjectInformation projectInformation=dtoToProjectInfo(projectInformationDto,expInfoId);
         ProjectInformation saveProjectInfo=projectInformationRepository.save(projectInformation);
-        return projectInfoToDto(saveProjectInfo,expInfoId);
+        return projectInfoToDto(saveProjectInfo);
     }
 
 
@@ -72,6 +73,21 @@ public class ProjectInformationServiceImpl implements ProjectInformationService 
         return modelMapper.map(projectInformation,ProjectInformationDto.class);
     }
 
+    @Override
+    public List<ProjectInformationDto> getProjectInfoByExperienceInfoId(Short experienceInfoId) {
+
+        return  toDto(projectInformationRepository.findProjectInformationByExperienceInformationId(experienceInfoId));
+    }
+
+    @Override
+    public List<ProjectInformationDto> getProjectInfoByBasicInfoId(Short basicInfoId) {
+        return toDto(projectInformationRepository.findByExperienceInformation_BasicInformation_Id(basicInfoId));
+    }
+
+    public List<ProjectInformationDto> toDto(List<ProjectInformation> projectInformationList){
+        return projectInformationList.stream().map(this::projectInfoToDto).collect(Collectors.toList());
+    }
+
     public ProjectInformation dtoToProjectInfo(ProjectInformationDto projectInformationDto,Short expInfoId){
         ExperienceInformation experienceInformation=experienceInformationRepository.findById(expInfoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project Information", "Id", expInfoId));
@@ -86,7 +102,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService 
         return projectInformation;
     }
 
-    public ProjectInformationDto projectInfoToDto(ProjectInformation projectInformation, Short expInfoId){
+    public ProjectInformationDto projectInfoToDto(ProjectInformation projectInformation){
         ExperienceInformationDto experienceInformationDto=new ExperienceInformationDto();
         experienceInformationDto.setId(projectInformation.getExperienceInformation().getId());
 
@@ -97,7 +113,7 @@ public class ProjectInformationServiceImpl implements ProjectInformationService 
         projectInformationDto.setProjectDescription(projectInformation.getProjectDescription());
         projectInformationDto.setTechStack(projectInformation.getTechStack());
         projectInformationDto.setProjectUrl(projectInformation.getProjectUrl());
-        projectInformationDto.setExperienceInformation(experienceInformationDto);
+        //projectInformationDto.setExperienceInformation(experienceInformationDto);
         return projectInformationDto;
     }
 

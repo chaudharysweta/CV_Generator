@@ -33,7 +33,6 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-
     //DELETE-delete user
     @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable("userId") Integer uid){

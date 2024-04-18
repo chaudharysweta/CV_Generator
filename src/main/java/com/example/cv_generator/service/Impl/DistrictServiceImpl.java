@@ -28,14 +28,14 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
     @Override
-    public DistrictDto createDistrict(DistrictDto districtDto, Integer provinceId) {
+    public DistrictDto createDistrict(DistrictDto districtDto, Short provinceId) {
         District district=dtoToDistrict(districtDto,provinceId);
         District savedDistrict=districtRepository.save(district);
         return districtToDto(savedDistrict,provinceId);
     }
 
     @Override
-    public DistrictDto updateDistrict(DistrictDto districtDto, Integer districtId) {
+    public DistrictDto updateDistrict(DistrictDto districtDto, Short districtId) {
         District district=districtRepository.findById(districtId)
                 .orElseThrow(()->new ResourceNotFoundException("District","Id",districtId));
         district.setName(districtDto.getName());
@@ -47,7 +47,7 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
     @Override
-    public void deleteDistrict(Integer districtId) {
+    public void deleteDistrict(Short districtId) {
 
         District district=districtRepository.findById(districtId)
                 .orElseThrow(()->new ResourceNotFoundException("District","Id",districtId));
@@ -62,13 +62,13 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
     @Override
-    public DistrictDto getDistrictById(Integer districtId) {
+    public DistrictDto getDistrictById(Short districtId) {
         District district=districtRepository.findById(districtId)
                 .orElseThrow(()->new ResourceNotFoundException("District","Id",districtId));
         return modelMapper.map(district,DistrictDto.class);
     }
 
-    public District dtoToDistrict(DistrictDto districtDto,Integer provinceId){
+    public District dtoToDistrict(DistrictDto districtDto,Short provinceId){
         Province province=provinceRepository.findById(provinceId)
                 .orElseThrow(()->new ResourceNotFoundException("Province","Id",provinceId));
         District district=new District();
@@ -79,7 +79,7 @@ public class DistrictServiceImpl implements DistrictService {
         district.setProvince(province);
         return district;
     }
-    public DistrictDto districtToDto(District district,Integer provinceId){
+    public DistrictDto districtToDto(District district,Short provinceId){
 
 
         ProvinceDto provinceDto=new ProvinceDto();

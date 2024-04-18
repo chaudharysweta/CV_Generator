@@ -29,7 +29,7 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public CountryDto updateCountry(CountryDto countryDto, Integer countryId) {
+    public CountryDto updateCountry(CountryDto countryDto, Short countryId) {
         Country country=countryRepository.findById(countryId)
                 .orElseThrow(()->new ResourceNotFoundException("Country","Id",countryId));
         country.setName(countryDto.getName());
@@ -38,7 +38,7 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public void deleteCountry(Integer countryId) {
+    public void deleteCountry(Short countryId) {
         Country country=countryRepository.findById(countryId)
                 .orElseThrow(()->new ResourceNotFoundException("Country","Id",countryId));
         countryRepository.delete(country);
@@ -52,7 +52,7 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public CountryDto getCountryById(Integer countryId) {
+    public CountryDto getCountryById(Short countryId)  {
         Country country=countryRepository.findById(countryId)
                 .orElseThrow(()->new ResourceNotFoundException("Country","Id",countryId));
         return modelMapper.map(country,CountryDto.class);

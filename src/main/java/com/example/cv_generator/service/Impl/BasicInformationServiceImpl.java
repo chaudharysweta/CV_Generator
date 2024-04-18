@@ -3,7 +3,7 @@ package com.example.cv_generator.service.Impl;
 import com.example.cv_generator.dto.BasicInformationDto;
 import com.example.cv_generator.entity.BasicInformation;
 import com.example.cv_generator.exception.ResourceNotFoundException;
-import com.example.cv_generator.repository.BasicInformationRepository;
+import com.example.cv_generator.repository.*;
 import com.example.cv_generator.service.BasicInformationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,8 @@ import java.util.List;
 public class BasicInformationServiceImpl implements BasicInformationService {
 
     private final BasicInformationRepository basicInformationRepository;
+
+
     private final ModelMapper modelMapper;
 
     public BasicInformationServiceImpl(BasicInformationRepository basicInformationRepository, ModelMapper modelMapper) {
@@ -41,6 +43,7 @@ public class BasicInformationServiceImpl implements BasicInformationService {
         basicInformation.setMobileNumber(basicInformationDto.getMobileNumber());
         basicInformation.setEmail(basicInformationDto.getEmail());
         basicInformation.setLinkedInUrl(basicInformationDto.getLinkedInUrl());
+        basicInformation.setProfileImage(basicInformationDto.getProfileImage());
         BasicInformation updatedBasicInformation=this.basicInformationRepository.save(basicInformation);
         return this.modelMapper.map(updatedBasicInformation,BasicInformationDto.class);
     }
@@ -64,4 +67,5 @@ public class BasicInformationServiceImpl implements BasicInformationService {
         BasicInformation basicInformation=this.basicInformationRepository.findById(basicInfoId).orElseThrow(()->new ResourceNotFoundException("Basic Information ","Id",basicInfoId));
         return this.modelMapper.map(basicInformation,BasicInformationDto.class);
     }
+
 }

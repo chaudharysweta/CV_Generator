@@ -2,6 +2,7 @@ package com.example.cv_generator.service.Impl;
 
 import com.example.cv_generator.dto.DistrictDto;
 import com.example.cv_generator.dto.LocalLevelDto;
+import com.example.cv_generator.dto.ProjectInformationDto;
 import com.example.cv_generator.entity.District;
 import com.example.cv_generator.entity.LocalLevel;
 import com.example.cv_generator.exception.ResourceNotFoundException;
@@ -14,6 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LocalLevelServiceImpl implements LocalLevelService {
@@ -29,14 +31,14 @@ public class LocalLevelServiceImpl implements LocalLevelService {
     }
 
     @Override
-    public LocalLevelDto createLocalLevel(LocalLevelDto localLevelDto, Integer districtId) {
+    public LocalLevelDto createLocalLevel(LocalLevelDto localLevelDto, Short districtId) {
         LocalLevel localLevel=dtoToLocal(localLevelDto,districtId);
         LocalLevel savedLocal=localLevelRepository.save(localLevel);
-        return localToDto(savedLocal,districtId);
+        return localToDto(savedLocal);
     }
 
     @Override
-    public LocalLevelDto updateLocalLevel(LocalLevelDto localLevelDto, Integer localId) {
+    public LocalLevelDto updateLocalLevel(LocalLevelDto localLevelDto, Short localId) {
         LocalLevel localLevel=localLevelRepository.findById(localId)
                 .orElseThrow(()->new ResourceNotFoundException("Local Level","Id",localId));
         localLevel.setName(localLevelDto.getName());
@@ -48,7 +50,7 @@ public class LocalLevelServiceImpl implements LocalLevelService {
     }
 
     @Override
-    public void deleteLocalLevel(Integer localId) {
+    public void deleteLocalLevel(Short localId) {
         LocalLevel localLevel=localLevelRepository.findById(localId)
                 .orElseThrow(()->new ResourceNotFoundException("Local Level","Id",localId));
         localLevelRepository.delete(localLevel);
@@ -61,13 +63,30 @@ public class LocalLevelServiceImpl implements LocalLevelService {
         return localLevelDtos;
     }
     @Override
-    public LocalLevelDto getLocalDistrictById(Integer localId) {
+    public LocalLevelDto getLocalDistrictById(Short localId) {
         LocalLevel localLevel=localLevelRepository.findById(localId)
                 .orElseThrow(()->new ResourceNotFoundException("Local Level","Id",localId));
         return modelMapper.map(localLevel,LocalLevelDto.class);
     }
 
-    public LocalLevel dtoToLocal(LocalLevelDto localLevelDto,Integer districtId){
+//    @Override
+//    public List<LocalLevelDto> getLocalInfoByAddressInfoId(Short experienceInfoId) {
+//        return  toDto(localLevelRepository.findLocalInformationByAddressInformationId(experienceInfoId));
+//    }
+//
+//    @Override
+//    public List<LocalLevelDto> getLocalInfoByBasicInfoId(Short basicInfoId) {
+//        return toDto(localLevelRepository.findByAddressInformationBasicInformationId(basicInfoId));
+//    }
+//
+//
+//    public List<LocalLevelDto> toDto(List<LocalLevel> localLevelList){
+//        return localLevelList.stream().map(this::localToDto).collect(Collectors.toList());
+//    }
+
+
+
+    public LocalLevel dtoToLocal(LocalLevelDto localLevelDto,Short districtId){
         District district=districtRepository.findById(districtId)
                 .orElseThrow(()->new ResourceNotFoundException("District","Id",districtId));
         LocalLevel localLevel=new LocalLevel();
@@ -79,7 +98,7 @@ public class LocalLevelServiceImpl implements LocalLevelService {
         localLevel.setTotalWardCount(localLevelDto.getTotalWardCount());
         return localLevel;
     }
-    public LocalLevelDto localToDto(LocalLevel localLevel,Integer districtId){
+    public LocalLevelDto localToDto(LocalLevel localLevel){
         DistrictDto districtDto=new DistrictDto();
         districtDto.setId(localLevel.getId());
         districtDto.setName(localLevel.getName());
@@ -91,7 +110,7 @@ public class LocalLevelServiceImpl implements LocalLevelService {
         localLevelDto.setName(localLevel.getName());
         localLevelDto.setNepaliName(localLevel.getNepaliName());
         localLevelDto.setCode(localLevel.getCode());
-        localLevelDto.setDistrict(districtDto);
+        //localLevelDto.setDistrict(districtDto);
         localLevelDto.setTotalWardCount(localLevel.getTotalWardCount());
         return localLevelDto;
     }

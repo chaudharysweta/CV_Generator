@@ -30,9 +30,9 @@ public class UserServiceImpl implements UserService {
         this.roleRepository = roleRepository;
     }
     @Override
-    public UserDto registerNewUser(UserDto userDto) {  //UserDto is a return type
+    public UserDto registerNewUser(UserDto userDto) {
 
-        User user = this.modelMapper.map(userDto,User.class);       //conver userDto to user
+        User user = this.modelMapper.map(userDto,User.class);
 
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
 
@@ -47,9 +47,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        User user=this.dtoToUser(userDto);   //Convert UserDto to User
-        User savedUser=this.userRepository.save(user);  //Save User to Database
-        return this.userToDto(savedUser);  //Convert User to UserDto
+        User user=this.dtoToUser(userDto);
+        User savedUser=this.userRepository.save(user);
+        return this.userToDto(savedUser);
     }
 
 

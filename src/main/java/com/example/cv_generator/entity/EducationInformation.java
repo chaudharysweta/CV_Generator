@@ -53,4 +53,5 @@ public class EducationInformation {
 
     @Column(name = "education_description",nullable = false,length = 100)
     private String educationDescription;
+
 }

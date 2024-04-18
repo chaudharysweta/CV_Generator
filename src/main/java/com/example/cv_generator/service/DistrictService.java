@@ -7,18 +7,18 @@ import java.util.List;
 public interface DistrictService {
 
     //create
-    DistrictDto createDistrict(DistrictDto districtDto, Integer provinceId);
+    DistrictDto createDistrict(DistrictDto districtDto, Short provinceId);
 
     //update
-    DistrictDto updateDistrict(DistrictDto districtDto,Integer districtId);
+    DistrictDto updateDistrict(DistrictDto districtDto,Short districtId);
 
     //delete
-    void deleteDistrict(Integer districtId);
+    void deleteDistrict(Short districtId);
 
     //get all
     List<DistrictDto> getAllDistrict();
 
     //get all by id
-    DistrictDto getDistrictById(Integer districtId);
+    DistrictDto getDistrictById(Short districtId);
 
 }

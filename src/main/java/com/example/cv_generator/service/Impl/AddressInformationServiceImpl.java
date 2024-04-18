@@ -2,21 +2,23 @@ package com.example.cv_generator.service.Impl;
 
 import com.example.cv_generator.dto.AddressInformationDto;
 import com.example.cv_generator.dto.BasicInformationDto;
+import com.example.cv_generator.pdf.IdNameDto;
 import com.example.cv_generator.dto.LocalLevelDto;
-import com.example.cv_generator.entity.AddressInformation;
-import com.example.cv_generator.entity.BasicInformation;
-import com.example.cv_generator.entity.LocalLevel;
+import com.example.cv_generator.entity.*;
 import com.example.cv_generator.exception.ResourceNotFoundException;
 import com.example.cv_generator.repository.AddressInformationRepository;
 import com.example.cv_generator.repository.BasicInformationRepository;
 import com.example.cv_generator.repository.LocalLevelRepository;
 import com.example.cv_generator.service.AddressInformationService;
+import lombok.Builder;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@Builder
 public class AddressInformationServiceImpl implements AddressInformationService {
 
     private final AddressInformationRepository addressInformationRepository;
@@ -32,10 +34,10 @@ public class AddressInformationServiceImpl implements AddressInformationService 
     }
 
     @Override
-    public AddressInformationDto createAddress(AddressInformationDto addressInformationDto, Short basicId, Integer localId) {
-        AddressInformation addressInformation=dtoToAddress(addressInformationDto,basicId,localId);
+    public AddressInformationDto createAddress(AddressInformationDto addressInformationDto, Short basicId) {
+        AddressInformation addressInformation=dtoToAddress(addressInformationDto,basicId);
         AddressInformation savedAddress=addressInformationRepository.save(addressInformation);
-        return addressToDto(savedAddress,basicId,localId);
+        return addressToDto(savedAddress);
     }
 
     @Override
@@ -69,20 +71,31 @@ public class AddressInformationServiceImpl implements AddressInformationService 
         return modelMapper.map(addressInformation,AddressInformationDto.class);
     }
 
+    @Override
+    public List<AddressInformationDto> getAddressInfoByBasicInfoId(Short basicInfoId) {
+        return toDto(addressInformationRepository.findAddressInformationByBasicInformationId(basicInfoId));
+    }
+
+    public List<AddressInformationDto> toDto(List<AddressInformation> addressInformationList){
+        return addressInformationList.stream().map(this::addressToDto).collect(Collectors.toList());
+    }
+
     //DTO Part
-    public AddressInformation dtoToAddress(AddressInformationDto addressInformationDto, Short basicId, Integer localId){
+    public AddressInformation dtoToAddress(AddressInformationDto addressInformationDto, Short basicId){
         BasicInformation basicInformation=basicInformationRepository.findById(basicId)
                 .orElseThrow(()->new ResourceNotFoundException("Basic Information","Id",basicId));
-        LocalLevel localLevel=localLevelRepository.findById(localId)
-                .orElseThrow(()->new ResourceNotFoundException("Local Level","Id",localId));
+
         AddressInformation addressInformation=new AddressInformation();
         addressInformation.setId(addressInformationDto.getId());
-        addressInformation.setBasicInformation(basicInformation);
+        addressInformation.setBasicInformation(new BasicInformation(basicId));
         addressInformation.setAddressType(addressInformationDto.getAddressType());
-        addressInformation.setLocalLevel(localLevel);
+        addressInformation.setLocalLevel(new LocalLevel(addressInformationDto.getLocalLevelId()));
+        addressInformation.setDistrict(new District(addressInformationDto.getDistrictId()));
+        addressInformation.setProvince(new Province(addressInformationDto.getProvinceId()));
+        addressInformation.setCountry(new Country(addressInformationDto.getCountryId()));
         return addressInformation;
     }
-    public AddressInformationDto addressToDto(AddressInformation addressInformation,Short basicId, Integer localId){
+    public AddressInformationDto addressToDto(AddressInformation addressInformation){
         BasicInformationDto basicInformationDto=new BasicInformationDto();
         basicInformationDto.setId(addressInformation.getId());
         basicInformationDto.setFirstName(addressInformation.getBasicInformation().getFirstName());
@@ -104,9 +117,41 @@ public class AddressInformationServiceImpl implements AddressInformationService 
 
         AddressInformationDto addressInformationDto=new AddressInformationDto();
         addressInformationDto.setId(addressInformation.getId());
-        addressInformationDto.setBasicInformation(basicInformationDto);
         addressInformationDto.setAddressType(addressInformation.getAddressType());
-        addressInformationDto.setLocalLevel(localLevelDto);
+        addressInformationDto.setLocal(getLocal(addressInformation.getLocalLevel()));
+        addressInformationDto.setDistrict(getDistrict(addressInformation.getDistrict()));
+        addressInformationDto.setProvince(getProvince(addressInformation.getProvince()));
+        addressInformationDto.setCountry(getCountry(addressInformation.getCountry()));
+
         return addressInformationDto;
+    }
+
+
+    private IdNameDto getLocal(LocalLevel entity){
+        if(entity == null)
+            return null;
+
+        return IdNameDto.builder().id(entity.getId()).name(entity.getName()).build();
+    }
+
+    private IdNameDto getDistrict(District entity){
+        if(entity == null)
+            return null;
+
+        return IdNameDto.builder().id(entity.getId()).name(entity.getName()).build();
+    }
+
+    private IdNameDto getProvince(Province entity){
+        if(entity == null)
+            return null;
+
+        return IdNameDto.builder().id(entity.getId()).name(entity.getName()).build();
+    }
+
+    private IdNameDto getCountry(Country entity){
+        if(entity == null)
+            return null;
+
+        return IdNameDto.builder().id(entity.getId()).name(entity.getName()).build();
     }
 }

@@ -21,10 +21,13 @@ public class Country {
     @Id
     @SequenceGenerator(name = "country_gen", sequenceName = "country_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "country_gen")
-    private Integer id;
+    private Short id;
 
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
+    public Country(Short id){
+        this.id=id;
+    }
 
 }

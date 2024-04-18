@@ -20,4 +20,6 @@ public interface EducationInformationService {
 
     //get all by id
     EducationInformationDto getEducationInformationById(Short educationInfoId);
+
+    List<EducationInformationDto> getEducationByBasicId(Short basicInfoId);
 }

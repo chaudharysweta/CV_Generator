@@ -20,19 +20,21 @@ public class DistrictController {
     }
 
     @PostMapping("/create-dis/{province-id}")
-    public ResponseEntity<DistrictDto> createDistrict(@RequestBody DistrictDto districtDto, @PathVariable("province-id") Integer provinceId){
+    public ResponseEntity<DistrictDto> createDistrict(@RequestBody DistrictDto districtDto,
+                                                      @PathVariable("province-id") Short provinceId){
         DistrictDto districtDto1=districtService.createDistrict(districtDto,provinceId);
         return new ResponseEntity<>(districtDto1, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{district-id}")
-    public ResponseEntity<DistrictDto> updateDistrict(@RequestBody DistrictDto districtDto,@PathVariable("district-id") Integer districtId){
+    public ResponseEntity<DistrictDto> updateDistrict(@RequestBody DistrictDto districtDto,
+                                                      @PathVariable("district-id") Short districtId){
         DistrictDto districtDto1=districtService.updateDistrict(districtDto,districtId);
         return ResponseEntity.ok(districtDto1);
     }
 
     @DeleteMapping("/delete/{district-id}")
-    public ResponseEntity<ApiResponse> deleteDistrict(@PathVariable("district-id") Integer districtId){
+    public ResponseEntity<ApiResponse> deleteDistrict(@PathVariable("district-id") Short districtId){
         districtService.deleteDistrict(districtId);
         return new ResponseEntity<>(new ApiResponse("District deleted successfully",true),HttpStatus.OK);
     }
@@ -41,7 +43,7 @@ public class DistrictController {
         return ResponseEntity.ok(districtService.getAllDistrict());
     }
     @GetMapping("/{district-id}")
-    public ResponseEntity<DistrictDto> getDistrictById(@PathVariable("district-id") Integer districtId){
+    public ResponseEntity<DistrictDto> getDistrictById(@PathVariable("district-id") Short districtId){
         DistrictDto districtDto= districtService.getDistrictById(districtId);
         return new ResponseEntity<>(districtDto,HttpStatus.OK);
     }

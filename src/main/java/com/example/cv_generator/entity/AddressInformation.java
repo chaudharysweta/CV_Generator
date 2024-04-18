@@ -31,4 +31,16 @@ public class AddressInformation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "localbody", foreignKey = @ForeignKey(name = "fk_address_information_locallevel_id"))
     private LocalLevel localLevel;
+
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Province.class)
+    @JoinColumn(name = "province_id", foreignKey = @ForeignKey(name = "fk_province_address_information"))
+    private Province province;
+
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Country.class)
+    @JoinColumn(name = "country_id", foreignKey = @ForeignKey(name = "fk_country_address_information"))
+    private Country country;
+
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = District.class)
+    @JoinColumn(name = "district_id", foreignKey = @ForeignKey(name = "fk_district_address_information"))
+    private District district;
 }

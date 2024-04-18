@@ -6,6 +6,7 @@ import com.example.cv_generator.dto.UserDto;
 import com.example.cv_generator.exception.ApiException;
 import com.example.cv_generator.security.JwtTokenHelper;
 import com.example.cv_generator.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -41,9 +42,9 @@ public class AuthController {
 
         this.authenticate(request.getUsername(), request.getPassword());
 
-        UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
 
-        String token = this.jwtTokenHelper.generateToken(userDetails);
+        String token = jwtTokenHelper.generateToken(userDetails);
 
         JwtAuthResponse response = new JwtAuthResponse();
         response.setToken(token);
@@ -65,9 +66,9 @@ public class AuthController {
     //Register New User API
 
     @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDto){
 
-        UserDto registeredUser = this.userService.registerNewUser(userDto);
+        UserDto registeredUser = userService.registerNewUser(userDto);
 
         return new ResponseEntity<UserDto>(registeredUser,HttpStatus.CREATED);
     }

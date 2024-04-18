@@ -10,15 +10,15 @@ public interface CountryService {
     CountryDto createCountry(CountryDto countryDto);
 
     //update
-    CountryDto updateCountry(CountryDto countryDto, Integer countryId);
+    CountryDto updateCountry(CountryDto countryDto, Short countryId);
 
     //delete
-    void deleteCountry(Integer countryId);
+    void deleteCountry(Short countryId);
 
     //get all
     List<CountryDto> getAllCountry();
 
     //get by id
-    CountryDto getCountryById(Integer countryId);
+    CountryDto getCountryById(Short countryId);
 
 }

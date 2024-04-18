@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Template</title>
+    <link type="text/css" href="../static/css/demo.css"></link>
+    <style>
+        .container {
+            display: flex;
+            /* flex-wrap: wrap; */
+            width: 100%;
+        }
+
+        .wrapper {
+            height: 100vh;
+            margin-left: 20rem;
+            margin-right: 20rem;
+        }
+
+        .profile_pic_wrapper {
+            display: flex;
+            justify-content: center;
+        }
+
+        .profile_pic {
+            width: 70%;
+            border: 1px solid gray;
+            border-radius: 12000px;
+            padding: 1rem;
+            height: 12rem;
+            /* width: 12rem; */
+        }
+
+        .name {
+            text-align: center;
+        }
+
+        .container_child_1 {
+            background-color: gray;
+            width: 30%;
+            padding: 0.5rem;
+        }
+
+        .container_child_2 {
+            width: 70%;
+        }
+
+        .degination {
+            background-color: gray;
+            text-align: center;
+            padding: 1px;
+            margin-left: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .work_background_wrapper {
+            text-align: left;
+            padding-left: 5rem;
+        }
+
+        .work_background_wrapper h3 {
+            color: brown;
+            margin-bottom: 0.5rem;
+            margin-top: 1rem;
+            text-transform: uppercase;
+        }
+
+        .currently_running_project {
+            text-align: left;
+            padding-left: 5rem;
+        }
+
+        .currently_running_project h2 {
+            color: brown;
+            text-transform: uppercase;
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .currently_running_project_child h3 {
+            color: rgb(228, 130, 130);
+            margin-bottom: 0.2rem;
+            padding: 0
+
+        }
+
+        .background h2 {
+            color: rgb(224, 135, 135);
+            text-transform: uppercase;
+        }
+
+        .background p {
+            text-align: justify;
+            color: white;
+            font-size: 16px;
+        }
+
+        .profesional_skill {
+            margin-bottom: 1rem;
+        }
+
+        .profesional_skill h2 {
+            color: rgb(224, 135, 135);
+            text-transform: uppercase;
+
+        }
+
+        .profesional_skill ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .profesional_skill ul li {
+            text-transform: uppercase;
+            color: #ffffff;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="wrapper">
+<div class="container">
+    <div class="container_child_1">
+        <div class="profile_pic_wrapper">
+            <img th:src="${basicInformationDto.getProfileImage()}" class="profile_pic" alt="">
+        </div>
+        <div class="background">
+            <h2>My Background</h2>
+            <p>
+                <span th:text="${basicInformationDto.getBackground()}"></span>
+            </p>
+        </div>
+
+        <div class="profesional_skill">
+            <h2 style="margin: 0; padding: 0;">Professional Skill</h2>
+            <ul>
+                <li>Spring Framework</li>
+                <li>Spring MVC | Spring Boot</li>
+                <li>Monolith</li>
+            </ul>
+        </div>
+
+        <!-- education -->
+        <div class="profesional_skill" >
+            <h2 style="margin: 0; padding: 0;">Education</h2>
+            <span th:each="education : ${educationInformationDtos}">
+            <ul>
+                <li><span th:text="${education.getDegreeName()}"></span></li>
+                <li style="margin-bottom: 1rem;"><span th:text="${education.getInstitutionName()}"></span></li>
+            </ul>
+            </span>
+        </div>
+        <div class="profesional_skill">
+            <h2 style="margin: 0; padding: 0;" >Reach me At</h2>
+            <ul>
+                <div th:each="address : ${addressInformationDtos}">
+                    <li style="margin-bottom: 1rem;"><span th:text="${address.getAddressType()}"></span> | <span th:text="${address.getLocal().getName()}"></span> | <span th:text="${address.getDistrict().getName()}"></span> | <span th:text="${address.getProvince().getName()}"></span> | <span th:text="${address.getCountry().getName()}"></span></li>
+                </div>
+                <li style=" margin-bottom: 1rem;"><span th:text="${basicInformationDto.getMobileNumber()}"></span> | viber | whatsapp</li>
+                <li style="margin-bottom: 1rem;"><span th:text="${basicInformationDto.getLinkedInUrl()}"></span></li>
+            </ul>
+        </div>
+
+
+    </div>
+    <div class="container_child_2">
+        <h1 class="name"><span
+                th:text="${ basicInformationDto.getFirstName() + ' '+basicInformationDto.getMiddleName() +' '+ basicInformationDto.getLast_name()}"></span>
+        </h1>
+        <div class="degination">
+           <p><span th:text="${basicInformationDto.getTitle()}"></span></p>
+         </div>
+        <div class="work_background_wrapper">
+            <h3>Work Background</h3>
+            <!-- repeate through loop -->
+            <div style="margin-bottom: 0.5rem;" th:each="experience : ${experienceInformationDtos}">
+                <h4 style="margin: 0; padding: 0;">
+                    <!--                    Senior Software Developer  | Team Lead (May 26th 2019 to presetn)-->
+                    <span th:text=" '('+${experience.getFromDate() +' to ' + (experience.isToPresent() ? ' Present' : experience.getToDate())} +')' "></span>
+                </h4>
+                <ul style="padding:0;padding-left:1rem; margin: 0;list-style-type: disc; font-style: italic;">
+                    <li><span th:text="${experience.getCompanyName()}"></span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="currently_running_project">
+            <h2>Current Running Project</h2>
+            <!--        repeate through loop -->
+            <div class="currently_running_project_child" th:each="project : ${projectInformationDtos}">
+                <div th:if="${project.getProjectStatus().name() == 'DEVELOPMENT'}">
+                    <h3><span th:text="${project.getProjectName()}"></span></h3>
+                    <div style="margin-bottom: 0;">
+                        <ul style="padding:0;padding-left:1rem; margin: 0;list-style-type: disc; font-weight: bold;">
+                            <li> Role: <span th:text="${project.getProjectRole()}"></span></li>
+                            <li> Description: <span th:text="${project.getProjectDescription()}"></span></li>
+                            <li> link: <span th:text="${project.getProjectUrl()}"></span></li>
+                            <li> Status: <span th:text="${project.getProjectStatus()}"></span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="currently_running_project">
+            <h2>LIVE & SUPPORT PROJECTS</h2>
+            <!--        repeate through loop -->
+            <div class="currently_running_project_child" th:each="project : ${projectInformationDtos}">
+                <div th:if="${project.getProjectStatus().name() == 'LIVE'|| project.getProjectStatus().name() == 'UAT'}">
+                    <h3><span th:text="${project.getProjectName()}"></span></h3>
+                    <div style="margin-bottom: 0;">
+                        <ul style="padding:0;padding-left:1rem; margin: 0;list-style-type: disc; font-weight: bold;">
+                            <li> Role: <span th:text="${project.getProjectRole()}"></span></li>
+                            <li> Description: <span th:text="${project.getProjectDescription()}"></span></li>
+                            <li> link: <span th:text="${project.getProjectUrl()}"></span></li>
+                            <li> Status: <span th:text="${project.getProjectStatus()}"></span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
