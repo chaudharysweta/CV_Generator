@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Resume Template</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<!--  <style>-->
+<!--    .rounded-circle {-->
+<!--      border-radius: 50%;-->
+<!--      width: 350px;-->
+<!--      height: 350px;-->
+<!--    }-->
+<!--  </style>-->
+</head>
+<body class="bg-light">
+<div class="container p-5">
+  <div class="row">
+    <div class="col-lg-4 bg-dark text-white text-center py-4">
+      <div class="header-left">
+        <img style="border-radius: 50%; width: 350px; height: 350px" th:src="${basicInformationDto.profileImage}" alt="" class="img-thumbnail mb-2">
+        <h1 th:text="${basicInformationDto.firstName} + ' ' + ${basicInformationDto.middleName} + ' ' + ${basicInformationDto.last_name}">Sweta Raj Chaudhary</h1>
+        <h4 class="lead text-uppercase text-white-50 mb-4" th:text="${basicInformationDto.title}">Job Title</h4>
+      </div>
+      <div>
+        <h5 class="text-uppercase bg-white text-dark py-2 rounded-pill">My Background</h5>
+        <ul class="list-unstyled text-white-50 ml-5 py-2 text-left">
+          <li th:text="${basicInformationDto.background}">Background</li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-uppercase bg-white text-dark py-2 rounded-pill">Education</h5>
+        <ul th:each="education : ${educationInformationDtos}" class="list text-white-50 ml-5 py-2 text-left text-capitalize">
+          <!-- Loop through education information -->
+          <span th:text="${education.getDegreeName()}"></span>
+          <li class="list-item" th:text="${education.institutionName} + ', ' + ${education.institutionAddress}">Education</li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="text-uppercase bg-white text-dark py-2 rounded-pill">Contact</h5>
+        <ul class="list-unstyled text-white-50 ml-5 py-2 text-left">
+          <li class="list-item">
+            <i class="fas fa-mobile-alt max-4"></i>
+            <span th:text="${basicInformationDto.mobileNumber}">Mobile Number</span>
+          </li>
+          <li class="list-item">
+            <i class="fas fa-envelope-open-text max-4"></i>
+            <span th:text="${basicInformationDto.email}">Email</span>
+          </li>
+          <li class="list-item">
+            <i class="fas fa-blog max-4"></i>
+            <span th:text="${basicInformationDto.linkedInUrl}">LinkedIn URL</span>
+          </li>
+          <li th:each="address : ${addressInformationDtos}" class="list-item">
+            <i class="fas fa-map-marker-alt max-4"></i>
+            <span th:text="${address.getAddressType()}"></span> | <span th:text="${address.getLocal().getName()}"></span> | <span th:text="${address.getDistrict().getName()}"></span> | <span th:text="${address.getProvince().getName()}"></span> | <span th:text="${address.getCountry().getName()}"></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-8 bg-light text-dark py-5 px-5">
+      <div class="header-right">
+        <h4 class="text-uppercase">Work Background</h4>
+        <hr>
+        <div th:each="experience : ${experienceInformationDtos}">
+          <h5 th:text="${experience.companyName} + ' (' + ${experience.fromDate} + ' to ' + ${experience.toDate} + ')'">Experience</h5>
+          <ul class="list">
+            <li class="list-item">
+              <h6 class=" text-black-50" th:text="${experience.companyAddress}">Company Address</h6>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-uppercase">Currently Running Projects</h4>
+        <hr>
+        <div th:each="project : ${projectInformationDtos}">
+          <div th:if="${project.getProjectStatus().name() == 'DEVELOPMENT'}">
+            <h6 class="text-uppercase text-black-50" th:text="${project.getProjectName()}">Project Name</h6>
+            <ul class="list">
+              <li class="list-item">Role : <span th:text="${project.getProjectRole()}"></span></li>
+              <li class="list-item">Tech Stack : <span th:text="${project.getTechStack()}"></span></li>
+              <li class="list-item">Link : <span th:text="${project.getProjectUrl()}"></span></li>
+              <li class="list-item">Description : <span th:text="${project.getProjectDescription()}"></span></li>
+              <li class="list-item">Status : <span th:text="${project.getProjectStatus()}"></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-uppercase">Live & Support Projects</h4>
+        <hr>
+        <div th:each="project : ${projectInformationDtos}">
+          <div th:if="${project.getProjectStatus().name() == 'LIVE'|| project.getProjectStatus().name() == 'UAT'}">
+            <h6 class="text-uppercase text-black-50" th:text="${project.getProjectName()}">Project Name</h6>
+            <ul class="list">
+              <li class="list-item">Role : <span th:text="${project.getProjectRole()}"></span></li>
+              <li class="list-item">Tech Stack : <span th:text="${project.getTechStack()}"></span></li>
+              <li class="list-item">Link : <span th:text="${project.getProjectUrl()}"></span></li>
+              <li class="list-item">Description : <span th:text="${project.getProjectDescription()}"></span></li>
+              <li class="list-item">Status : <span th:text="${project.getProjectStatus()}"></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8 bg-light text-dark py-4 px-5"></div>
+  </div>
+</div>
+</body>
+</html>

@@ -22,9 +22,7 @@ public interface LocalLevelService {
     //get by id
     LocalLevelDto getLocalDistrictById(Short localId);
 
-//    List<LocalLevelDto> getLocalInfoByAddressInfoId(Short experienceInfoId);
-//    // get by basic id
-//    List<LocalLevelDto> getLocalInfoByBasicInfoId(Short basicInfoId);
+
 
 
 

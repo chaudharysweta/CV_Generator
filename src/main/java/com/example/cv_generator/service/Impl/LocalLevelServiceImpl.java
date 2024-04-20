@@ -24,7 +24,7 @@ public class LocalLevelServiceImpl implements LocalLevelService {
     private final LocalLevelRepository localLevelRepository;
     private final ModelMapper modelMapper;
 
-    public LocalLevelServiceImpl(DistrictRepository districtRepository, LocalLevelRepository localLevelRepository, ProvinceRepository provinceRepository, CountryRepository countryRepository, ModelMapper modelMapper) {
+    public LocalLevelServiceImpl(DistrictRepository districtRepository, LocalLevelRepository localLevelRepository, ModelMapper modelMapper) {
         this.districtRepository = districtRepository;
         this.localLevelRepository = localLevelRepository;
         this.modelMapper = modelMapper;
@@ -69,22 +69,6 @@ public class LocalLevelServiceImpl implements LocalLevelService {
         return modelMapper.map(localLevel,LocalLevelDto.class);
     }
 
-//    @Override
-//    public List<LocalLevelDto> getLocalInfoByAddressInfoId(Short experienceInfoId) {
-//        return  toDto(localLevelRepository.findLocalInformationByAddressInformationId(experienceInfoId));
-//    }
-//
-//    @Override
-//    public List<LocalLevelDto> getLocalInfoByBasicInfoId(Short basicInfoId) {
-//        return toDto(localLevelRepository.findByAddressInformationBasicInformationId(basicInfoId));
-//    }
-//
-//
-//    public List<LocalLevelDto> toDto(List<LocalLevel> localLevelList){
-//        return localLevelList.stream().map(this::localToDto).collect(Collectors.toList());
-//    }
-
-
 
     public LocalLevel dtoToLocal(LocalLevelDto localLevelDto,Short districtId){
         District district=districtRepository.findById(districtId)
@@ -110,7 +94,6 @@ public class LocalLevelServiceImpl implements LocalLevelService {
         localLevelDto.setName(localLevel.getName());
         localLevelDto.setNepaliName(localLevel.getNepaliName());
         localLevelDto.setCode(localLevel.getCode());
-        //localLevelDto.setDistrict(districtDto);
         localLevelDto.setTotalWardCount(localLevel.getTotalWardCount());
         return localLevelDto;
     }

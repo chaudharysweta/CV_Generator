@@ -113,7 +113,6 @@ public class ProjectInformationServiceImpl implements ProjectInformationService 
         projectInformationDto.setProjectDescription(projectInformation.getProjectDescription());
         projectInformationDto.setTechStack(projectInformation.getTechStack());
         projectInformationDto.setProjectUrl(projectInformation.getProjectUrl());
-        //projectInformationDto.setExperienceInformation(experienceInformationDto);
         return projectInformationDto;
     }
 

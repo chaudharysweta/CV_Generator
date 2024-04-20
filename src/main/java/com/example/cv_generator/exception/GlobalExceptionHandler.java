@@ -81,7 +81,8 @@ public class GlobalExceptionHandler {
         }
         if (ex.getCause() instanceof DataException) {
             return new ResponseEntity<>(new GlobalApiResponse(false,
-                    customMessageSource.get("invalid.data.validation"), "Issue occurred with Relational data"), HttpStatus.INTERNAL_SERVER_ERROR);
+                    customMessageSource.get("invalid.data.validation"), "Issue occurred with Relational data"),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(new GlobalApiResponse(false,
                 customMessageSource.get("please.contact.operator"),

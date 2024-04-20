@@ -39,7 +39,7 @@ public class EducationInformationServiceImpl implements EducationInformationServ
 
     @Override
     public EducationInformationDto updateEducationInformation(EducationInformationDto educationInformationDto, Short educationInfoId) {
-        EducationInformation educationInformation = this.educationInformationRepository.findById(educationInfoId).orElseThrow(() -> new ResourceNotFoundException("Education Information", "Id", educationInfoId));
+        EducationInformation educationInformation = educationInformationRepository.findById(educationInfoId).orElseThrow(() -> new ResourceNotFoundException("Education Information", "Id", educationInfoId));
         educationInformation.setInstitutionName(educationInformationDto.getInstitutionName());
         educationInformation.setInstitutionAddress(educationInformationDto.getInstitutionAddress());
         educationInformation.setInstitutionContact(educationInformationDto.getInstitutionContact());
@@ -48,29 +48,29 @@ public class EducationInformationServiceImpl implements EducationInformationServ
         educationInformation.setDegreeName(educationInformationDto.getDegreeName());
         educationInformation.setEducationDescription(educationInformation.getEducationDescription());
         educationInformation.setToPresent(educationInformationDto.getToPresent());
-        EducationInformation updatedEducationInformation = this.educationInformationRepository.save(educationInformation);
-        return this.modelMapper.map(updatedEducationInformation, EducationInformationDto.class);
+        EducationInformation updatedEducationInformation = educationInformationRepository.save(educationInformation);
+        return modelMapper.map(updatedEducationInformation, EducationInformationDto.class);
     }
 
     @Override
     public void deleteEducationInformation(Short educationInfoId) {
-        EducationInformation educationInformation = this.educationInformationRepository.findById(educationInfoId).orElseThrow(() -> new ResourceNotFoundException("Education Information", "Id", educationInfoId));
-        this.educationInformationRepository.delete(educationInformation);
+        EducationInformation educationInformation = educationInformationRepository.findById(educationInfoId).orElseThrow(() -> new ResourceNotFoundException("Education Information", "Id", educationInfoId));
+        educationInformationRepository.delete(educationInformation);
 
     }
 
     @Override
     public List<EducationInformationDto> getAllEducationInformation() {
 
-        List<EducationInformation> educationInformation = this.educationInformationRepository.findAll();
-        List<EducationInformationDto> educationInformationDtos = educationInformation.stream().map((educationInfo) -> this.modelMapper.map(educationInfo, EducationInformationDto.class)).toList();
+        List<EducationInformation> educationInformation = educationInformationRepository.findAll();
+        List<EducationInformationDto> educationInformationDtos = educationInformation.stream().map((educationInfo) -> modelMapper.map(educationInfo, EducationInformationDto.class)).toList();
         return educationInformationDtos;
     }
 
     @Override
     public EducationInformationDto getEducationInformationById(Short educationInfoId) {
-        EducationInformation educationInformation = this.educationInformationRepository.findById(educationInfoId).orElseThrow(() -> new ResourceNotFoundException("Education Information", "Id", educationInfoId));
-        return this.modelMapper.map(educationInformation, EducationInformationDto.class);
+        EducationInformation educationInformation = educationInformationRepository.findById(educationInfoId).orElseThrow(() -> new ResourceNotFoundException("Education Information", "Id", educationInfoId));
+        return modelMapper.map(educationInformation, EducationInformationDto.class);
     }
 
 

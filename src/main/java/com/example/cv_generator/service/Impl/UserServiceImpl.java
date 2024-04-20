@@ -32,60 +32,60 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto registerNewUser(UserDto userDto) {
 
-        User user = this.modelMapper.map(userDto,User.class);
+        User user = modelMapper.map(userDto,User.class);
 
-        user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        Role role=this.roleRepository.findById(AppConstants.NORMAL_USER).get();
+        Role role=roleRepository.findById(AppConstants.NORMAL_USER).get();
 
         user.getRoles().add(role);
 
-        User newUser = this.userRepository.save(user);
+        User newUser = userRepository.save(user);
 
-        return this.modelMapper.map(newUser,UserDto.class);
+        return modelMapper.map(newUser,UserDto.class);
     }
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        User user=this.dtoToUser(userDto);
-        User savedUser=this.userRepository.save(user);
-        return this.userToDto(savedUser);
+        User user=dtoToUser(userDto);
+        User savedUser=userRepository.save(user);
+        return userToDto(savedUser);
     }
 
 
     @Override
     public UserDto updateUser(UserDto userDto, Integer userId) {
-        User user=this.userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User","Id",userId));
+        User user=userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User","Id",userId));
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
-        User updatedUser = this.userRepository.save(user);
-        UserDto userDto1= this.userToDto(updatedUser);
+        User updatedUser = userRepository.save(user);
+        UserDto userDto1= userToDto(updatedUser);
         return userDto1;
     }
 
     @Override
     public UserDto getUserById(Integer userId) {
-        User user=this.userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User","Id",userId));
+        User user=userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User","Id",userId));
 
-        return this.userToDto(user);
+        return userToDto(user);
     }
 
     @Override
     public List<UserDto> getAllUsers() {
-        List<User> users=this.userRepository.findAll();
-        List<UserDto> userDtos= users.stream().map(user -> this.userToDto(user)).toList();
+        List<User> users=userRepository.findAll();
+        List<UserDto> userDtos= users.stream().map(user -> userToDto(user)).toList();
         return userDtos;
     }
 
     @Override
     public void deleteUser(Integer userId) {
-        User user = this.userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User","Id",userId));
-        this.userRepository.delete(user);
+        User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User","Id",userId));
+        userRepository.delete(user);
     }
     public User dtoToUser(UserDto userDto){
         //ModelMapper is used to convert one class object to another class object
-        User user = this.modelMapper.map(userDto,User.class);
+        User user = modelMapper.map(userDto,User.class);
 //        User user=new User();
 //        user.setId(userDto.getId());
 //        user.setName(userDto.getName());
@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
     public UserDto userToDto(User user){
-        UserDto userDto=this.modelMapper.map(user,UserDto.class);
+        UserDto userDto=modelMapper.map(user,UserDto.class);
 //        UserDto userDto=new UserDto();
 //        userDto.setId(user.getId());
 //        userDto.setName(user.getName());

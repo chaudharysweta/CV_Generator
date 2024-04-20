@@ -28,7 +28,7 @@ public class CvGeneratorApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		System.out.println(this.passwordEncoder.encode("3341"));
+		System.out.println(passwordEncoder.encode("3341"));
 
 		try {
 			Role role=new Role();
@@ -40,7 +40,7 @@ public class CvGeneratorApplication implements CommandLineRunner {
 			role1.setName("NORMAL_USER");
 			List<Role>roles=List.of(role,role1);
 
-			List<Role>result =this.roleRepository.saveAll(roles);
+			List<Role>result =roleRepository.saveAll(roles);
 
 			result.forEach(r->{
 				System.out.println(r.getName());
